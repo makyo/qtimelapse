@@ -20,12 +20,21 @@ struct _GPhotoParams {
  * Handle interaction with the camera
  */
 class CameraHandler {
-    public:
-        CameraHandler();
-        void GPhotoParamsInit(GPhotoParams *g);
-        int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
-        int setConfigAction(GPhotoParams *p,const char *name, const char *value);
-        void captureImage();
+public:
+    CameraHandler();
+
+    void GPhotoParamsInit(GPhotoParams *g);
+    void setWorkingDirectory(char *);
+    int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
+    int setConfigAction(GPhotoParams *p,const char *name, const char *value);
+    void captureImage();
+
+private:
+    void _updateParams();
+    void _captureImage();
+    void _deleteImage();
+
+    char *workingDirectory;
 };
 
 #endif // CAMERAHANDLER_H

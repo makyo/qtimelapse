@@ -20,3 +20,7 @@ HEADERS  += qtimelapse.h \
     camerahandler.h
 
 FORMS    += qtimelapse.ui
+
+unix|win32: LIBS += -lgphoto2
+
+unix|win32: LIBS += -lgphoto2_port
