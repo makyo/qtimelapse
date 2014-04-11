@@ -24,7 +24,7 @@ public:
     CameraHandler();
 
     void GPhotoParamsInit(GPhotoParams *g);
-    void setWorkingDirectory(char *);
+    void setWorkingDirectory(const char *);
     int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
     int setConfigAction(GPhotoParams *p,const char *name, const char *value);
     void captureImage();

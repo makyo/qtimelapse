@@ -14,10 +14,12 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         qtimelapse.cpp \
-    camerahandler.cpp
+    camerahandler.cpp \
+    timelapse.cpp
 
 HEADERS  += qtimelapse.h \
-    camerahandler.h
+    camerahandler.h \
+    timelapse.h
 
 FORMS    += qtimelapse.ui
 

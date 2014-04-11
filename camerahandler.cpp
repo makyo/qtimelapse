@@ -29,7 +29,7 @@ void CameraHandler::GPhotoParamsInit(GPhotoParams *p) {
     p->abilitiesList = NULL;
 }
 
-void CameraHandler::setWorkingDirectory(char *wd) {
+void CameraHandler::setWorkingDirectory(const char *wd) {
     strcpy(workingDirectory, wd);
 }
 

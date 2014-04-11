@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>675</width>
-    <height>428</height>
+    <width>717</width>
+    <height>483</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,6 +17,9 @@
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabView">
+      <property name="inputMethodHints">
+       <set>Qt::ImhDigitsOnly</set>
+      </property>
       <property name="currentIndex">
        <number>0</number>
       </property>
@@ -114,14 +117,14 @@
         <item>
          <layout class="QGridLayout" name="gridLayout">
           <item row="1" column="3">
-           <widget class="QLabel" name="label_4">
+           <widget class="QLabel" name="lbl_maxFrames">
             <property name="text">
              <string>Maximum frames:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QLineEdit" name="lineEdit_2">
+           <widget class="QLineEdit" name="input_interval">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -133,11 +136,23 @@
               <width>100</width>
               <height>27</height>
              </size>
+            </property>
+            <property name="inputMethodHints">
+             <set>Qt::ImhDigitsOnly</set>
+            </property>
+            <property name="inputMask">
+             <string>0000009</string>
+            </property>
+            <property name="text">
+             <string>10</string>
+            </property>
+            <property name="echoMode">
+             <enum>QLineEdit::Normal</enum>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLineEdit" name="lineEdit">
+           <widget class="QLineEdit" name="input_framesPerInterval">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -150,10 +165,19 @@
               <height>27</height>
              </size>
             </property>
+            <property name="inputMethodHints">
+             <set>Qt::ImhDigitsOnly</set>
+            </property>
+            <property name="inputMask">
+             <string>0000009</string>
+            </property>
+            <property name="text">
+             <string>1</string>
+            </property>
            </widget>
           </item>
           <item row="0" column="5">
-           <widget class="QLabel" name="label_7">
+           <widget class="QLabel" name="lbl_maxRuntimeUnits">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -166,35 +190,35 @@
            </widget>
           </item>
           <item row="1" column="5">
-           <widget class="QLabel" name="label_8">
+           <widget class="QLabel" name="lbl_maxFramesUnits">
             <property name="text">
              <string>frames</string>
             </property>
            </widget>
           </item>
           <item row="0" column="3">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="lbl_maxRuntime">
             <property name="text">
              <string>Maximum runtime:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="2">
-           <widget class="QLabel" name="label_5">
+           <widget class="QLabel" name="lbl_intervalUnits">
             <property name="text">
              <string>seconds</string>
             </property>
            </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_2">
+           <widget class="QLabel" name="lbl_framesPerInterval">
             <property name="text">
              <string>Frames per interval:</string>
             </property>
            </widget>
           </item>
           <item row="1" column="4">
-           <widget class="QLineEdit" name="lineEdit_4">
+           <widget class="QLineEdit" name="input_maxFrames">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -207,17 +231,26 @@
               <height>27</height>
              </size>
             </property>
+            <property name="inputMethodHints">
+             <set>Qt::ImhDigitsOnly</set>
+            </property>
+            <property name="inputMask">
+             <string>0000009</string>
+            </property>
+            <property name="text">
+             <string>10</string>
+            </property>
            </widget>
           </item>
           <item row="0" column="0">
-           <widget class="QLabel" name="label">
+           <widget class="QLabel" name="lbl_interval">
             <property name="text">
              <string>Interval:</string>
             </property>
            </widget>
           </item>
           <item row="0" column="4">
-           <widget class="QLineEdit" name="lineEdit_3">
+           <widget class="QLineEdit" name="input_maxRuntime">
             <property name="minimumSize">
              <size>
               <width>100</width>
@@ -230,10 +263,19 @@
               <height>27</height>
              </size>
             </property>
+            <property name="inputMethodHints">
+             <set>Qt::ImhDigitsOnly</set>
+            </property>
+            <property name="inputMask">
+             <string>0000009</string>
+            </property>
+            <property name="text">
+             <string>0</string>
+            </property>
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QLabel" name="label_6">
+           <widget class="QLabel" name="lbl_framesPerIntervalUnits">
             <property name="text">
              <string>frames</string>
             </property>
@@ -242,7 +284,7 @@
          </layout>
         </item>
         <item>
-         <widget class="QGraphicsView" name="graphicsView"/>
+         <widget class="QGraphicsView" name="capturePreview"/>
         </item>
        </layout>
       </widget>
@@ -250,11 +292,157 @@
        <attribute name="title">
         <string>Camera Settings</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="chk_retrieveImages">
+            <property name="text">
+             <string>Retrieve images from camera</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="chk_deleteImages">
+            <property name="text">
+             <string>Delete images from Camera</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="grp_cameraSettings">
+            <property name="title">
+             <string>Camera Settings</string>
+            </property>
+            <property name="flat">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </widget>
       <widget class="QWidget" name="tab_capturedImages">
        <attribute name="title">
         <string>Captured Images</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_4">
+        <item row="2" column="4">
+         <widget class="QGraphicsView" name="preview17"/>
+        </item>
+        <item row="2" column="3">
+         <widget class="QGraphicsView" name="preview16"/>
+        </item>
+        <item row="0" column="5">
+         <widget class="QGraphicsView" name="preview6"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QGraphicsView" name="preview7"/>
+        </item>
+        <item row="0" column="3">
+         <widget class="QGraphicsView" name="preview4"/>
+        </item>
+        <item row="1" column="3">
+         <widget class="QGraphicsView" name="preview10"/>
+        </item>
+        <item row="5" column="3">
+         <widget class="QGraphicsView" name="preview34"/>
+        </item>
+        <item row="5" column="5">
+         <widget class="QGraphicsView" name="preview36"/>
+        </item>
+        <item row="5" column="4">
+         <widget class="QGraphicsView" name="preview35"/>
+        </item>
+        <item row="4" column="0">
+         <widget class="QGraphicsView" name="preview25"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QGraphicsView" name="preview13"/>
+        </item>
+        <item row="1" column="5">
+         <widget class="QGraphicsView" name="preview12"/>
+        </item>
+        <item row="5" column="0">
+         <widget class="QGraphicsView" name="preview31"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QGraphicsView" name="preview19"/>
+        </item>
+        <item row="0" column="4">
+         <widget class="QGraphicsView" name="preview5"/>
+        </item>
+        <item row="2" column="5">
+         <widget class="QGraphicsView" name="preview18"/>
+        </item>
+        <item row="1" column="4">
+         <widget class="QGraphicsView" name="preview11"/>
+        </item>
+        <item row="4" column="2">
+         <widget class="QGraphicsView" name="preview27"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QGraphicsView" name="preview1"/>
+        </item>
+        <item row="4" column="1">
+         <widget class="QGraphicsView" name="preview26"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QGraphicsView" name="preview2"/>
+        </item>
+        <item row="0" column="2">
+         <widget class="QGraphicsView" name="preview3"/>
+        </item>
+        <item row="1" column="1">
+         <widget class="QGraphicsView" name="preview8"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QGraphicsView" name="preview9"/>
+        </item>
+        <item row="2" column="1">
+         <widget class="QGraphicsView" name="preview14"/>
+        </item>
+        <item row="2" column="2">
+         <widget class="QGraphicsView" name="preview15"/>
+        </item>
+        <item row="3" column="1">
+         <widget class="QGraphicsView" name="preview20"/>
+        </item>
+        <item row="3" column="2">
+         <widget class="QGraphicsView" name="preview21"/>
+        </item>
+        <item row="5" column="1">
+         <widget class="QGraphicsView" name="preview32"/>
+        </item>
+        <item row="5" column="2">
+         <widget class="QGraphicsView" name="preview33"/>
+        </item>
+        <item row="3" column="3">
+         <widget class="QGraphicsView" name="preview22"/>
+        </item>
+        <item row="4" column="3">
+         <widget class="QGraphicsView" name="preview28"/>
+        </item>
+        <item row="3" column="4">
+         <widget class="QGraphicsView" name="preview23"/>
+        </item>
+        <item row="4" column="4">
+         <widget class="QGraphicsView" name="preview29"/>
+        </item>
+        <item row="3" column="5">
+         <widget class="QGraphicsView" name="preview24"/>
+        </item>
+        <item row="4" column="5">
+         <widget class="QGraphicsView" name="preview30"/>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>
@@ -265,7 +453,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>675</width>
+     <width>717</width>
      <height>25</height>
     </rect>
    </property>

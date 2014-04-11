@@ -5,6 +5,7 @@
 #include <QMainWindow>
 
 #include "camerahandler.h"
+#include "timelapse.h"
 
 namespace Ui {
 class QTimeLapse;
@@ -25,11 +26,15 @@ private slots:
     void on_btn_start_clicked();
     void on_btn_stop_clicked();
     void on_btn_chooseLocation_clicked();
-
+    void on_input_interval_textChanged(const QString &);
+    void on_input_framesPerInterval_textChanged(const QString &);
+    void on_input_maxRuntime_textChanged(const QString &);
+    void on_input_maxFrames_textChanged(const QString &);
 private:
     Ui::QTimeLapse *ui;
     QFileDialog *fileDialog_workingDirectory;
     CameraHandler *cameraHandler;
+    TimeLapse *timeLapse;
 };
 
 #endif // QTIMELAPSE_H
