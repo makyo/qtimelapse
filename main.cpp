@@ -1,8 +1,9 @@
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
 
-int main(int argc, char *argv[])
-{
+#include "camerahandler.h"
+
+int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
 
     QtQuick2ApplicationViewer viewer;
