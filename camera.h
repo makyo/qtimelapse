@@ -55,12 +55,13 @@ public:
     int findWidgetByName(const char *, CameraWidget **, CameraWidget **);
     int setConfigAction(const char *name, const char *value);
     void captureImage(bool retrieveImages, bool deleteImages);
+    vector<QTLWidget> *getWidgets();
 
 private:
     void _updateParams();
     void _captureImage(bool retrieveImage);
     QTLError _deleteImage();
-    void getWidgets(vector<QTLWidget> *, CameraWidget *, char *);
+    void _getWidgets(vector<QTLWidget> *, CameraWidget *, char *);
 
     char *workingDirectory;
     GPhotoParams *params;

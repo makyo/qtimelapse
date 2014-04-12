@@ -24,6 +24,9 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     handleCameraDetect(timeLapse->camera->initCamera());
 }
 
+/**
+ * @brief QTimeLapse::~QTimeLapse
+ */
 QTimeLapse::~QTimeLapse() {
     delete ui;
 }
@@ -50,8 +53,22 @@ void QTimeLapse::handleCameraDetect(QTLError e) {
     }
 }
 
+/**
+ * @brief QTimeLapse::displayCameraSettings
+ */
 void QTimeLapse::displayCameraSettings() {
-
+    vector<QTLWidget> *widgets = timeLapse->camera->getWidgets();
+    QFormLayout *settingsForm = new QFormLayout();
+    for (unsigned int i = 0; i < widgets->size(); i++) {
+        QTLWidget widget = widgets->at(i);
+        QComboBox *comboBox = new QComboBox();
+        for (unsigned int j = 0; j < widget.choices.size(); j++) {
+            comboBox->addItem(widget.choices.at(j));
+        }
+        QLabel *label = new QLabel(widget.title);
+        settingsForm->addRow(label, comboBox);
+    }
+    ui->grp_cameraSettings->setLayout(settingsForm);
 }
 
 /****************************************************************************************

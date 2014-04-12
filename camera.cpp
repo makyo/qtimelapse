@@ -67,7 +67,7 @@ QTLError QTLCamera::initCamera() {
         result.rc = gp_camera_get_config(params->camera, &rootConfig, params->context);
         if (result.rc == GP_OK) {
             char prefix[] = "";
-            getWidgets(params->widgetList, rootConfig, prefix);
+            _getWidgets(params->widgetList, rootConfig, prefix);
             gp_widget_free(rootConfig);
         }
         cout << "Widgets detected" << endl;
@@ -76,7 +76,21 @@ QTLError QTLCamera::initCamera() {
     return result;
 }
 
-void QTLCamera::getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
+/**
+ * @brief QTLCamera::getWidgets
+ * @return
+ */
+vector<QTLWidget> *QTLCamera::getWidgets() {
+    return params->widgetList;
+}
+
+/**
+ * @brief QTLCamera::_getWidgets
+ * @param widgetList
+ * @param widget
+ * @param prefix
+ */
+void QTLCamera::_getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
                            char *prefix) {
     int rc, n;
     char *newprefix;
@@ -152,7 +166,7 @@ void QTLCamera::getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
         if (rc != GP_OK) {
             continue;
         }
-        getWidgets(widgetList, child, newprefix);
+        _getWidgets(widgetList, child, newprefix);
     }
     free(newprefix);
 }

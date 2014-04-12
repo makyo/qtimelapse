@@ -1,7 +1,10 @@
 #ifndef QTIMELAPSE_H
 #define QTIMELAPSE_H
 
+#include <QComboBox>
 #include <QFileDialog>
+#include <QFormLayout>
+#include <QLabel>
 #include <QMainWindow>
 #include <QMessageBox>
 
