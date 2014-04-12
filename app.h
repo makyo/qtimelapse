@@ -4,7 +4,7 @@
 #include <QFileDialog>
 #include <QMainWindow>
 
-#include "camerahandler.h"
+#include "camera.h"
 #include "timelapse.h"
 
 namespace Ui {
@@ -18,6 +18,8 @@ public:
     explicit QTimeLapse(QWidget *parent = 0);
     ~QTimeLapse();
 
+    void handleCameraDetect(int);
+
 private slots:
     void on_actionExit_triggered();
     void on_actionDetect_Camera_triggered();
@@ -30,10 +32,12 @@ private slots:
     void on_input_framesPerInterval_textChanged(const QString &);
     void on_input_maxRuntime_textChanged(const QString &);
     void on_input_maxFrames_textChanged(const QString &);
+    void on_chk_retrieveImages_toggled(bool checked);
+    void on_chk_deleteImages_toggled(bool checked);
+
 private:
     Ui::QTimeLapse *ui;
     QFileDialog *fileDialog_workingDirectory;
-    CameraHandler *cameraHandler;
     TimeLapse *timeLapse;
 };
 

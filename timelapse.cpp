@@ -50,6 +50,22 @@ void TimeLapse::setMaxFrames(int frames) {
 }
 
 /**
+ * @brief TimeLapse::setRetrieveImages
+ * @param retrieve
+ */
+void TimeLapse::setRetrieveImages(bool ret) {
+    params.retrieveImages = ret;
+}
+
+/**
+ * @brief TimeLapse::setDeleteImages
+ * @param del
+ */
+void TimeLapse::setDeleteImages(bool del) {
+    params.deleteImages = del;
+}
+
+/**
  * @brief TimeLapse::getParams
  * @return
  */

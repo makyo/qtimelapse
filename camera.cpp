@@ -3,34 +3,59 @@
 #include <cstdlib>
 #include <stdio.h>
 
-#include "camerahandler.h"
-
-using namespace std;
+#include "camera.h"
 
 /**
  * @brief CameraHandler::CameraHandler
  */
-CameraHandler::CameraHandler() {
+QTLCamera::QTLCamera() {
+    params = new GPhotoParams();
+    memset(params, 0, sizeof(GPhotoParams));
+    params->folder = strdup("/");
+    cout << "Attempting to initialize camera..." << endl;
+    gp_camera_new(&params->camera);
+    params->context = gp_context_new();
+    params->abilitiesList = NULL;
+    initCamera();
 }
 
-/**
- * @brief CameraHandler::GPhotoParamsInit
- * @param p
- */
-void CameraHandler::GPhotoParamsInit(GPhotoParams *p) {
-    if (!p) {
-        return;
+void QTLCamera::setWorkingDirectory(const char *wd) {
+    strcpy(workingDirectory, wd);
+}
+
+int QTLCamera::detectCamera() {
+    // Close connection to camera
+    gp_camera_exit(params->camera, params->context);
+
+    // Set up camera paramaters
+    return initCamera();
+}
+
+int QTLCamera::initCamera() {
+
+    // Set aside memory for camera
+    int result = gp_camera_new(&params->camera);
+    if (result != GP_OK) {
+        cout << "Failed to create camera:\t" << result << endl << gp_result_as_string(result) << endl;
+        return result;
     }
 
-    memset(p, 0, sizeof(GPhotoParams));
-    p->folder = strdup("/");
-    gp_camera_new(&p->camera);
-    p->context = gp_context_new();
-    p->abilitiesList = NULL;
-}
+    // Initialise camera
+    cout << "Detecting Camera." << endl << endl;
+    result = gp_camera_init(params->camera, params->context);
 
-void CameraHandler::setWorkingDirectory(const char *wd) {
-    strcpy(workingDirectory, wd);
+    if (result != GP_OK) {
+
+        if (result == -105) {
+            cout << "Failed to initialise camera. Please check the camera is turned on, then re-initialise or restart the program to enable camera paramaters.";
+            return CAMERA_NOT_FOUND;
+        } else if (result == -60 || result == -53) {
+            cout << "Failed to initialise camera. Please check the camera is unmounted and that no other applications are using it, then re-initialise or restart the program to enable camera paramaters.";
+            return CAMERA_NOT_INITIALIZED;
+        }
+    }
+    cout << "Camera initialised." << endl;
+    return CAMERA_OK;
 }
 
 /**
@@ -41,7 +66,7 @@ void CameraHandler::setWorkingDirectory(const char *wd) {
  * @param rootConfig
  * @return
  */
-int CameraHandler::findWidgetByName(GPhotoParams *p, const char *name, CameraWidget **child,
+int QTLCamera::findWidgetByName(GPhotoParams *p, const char *name, CameraWidget **child,
                      CameraWidget **rootConfig) {
     int rc;
     rc = gp_camera_get_config(p->camera, rootConfig, p->context);
@@ -109,7 +134,7 @@ int CameraHandler::findWidgetByName(GPhotoParams *p, const char *name, CameraWid
  * @param value
  * @return
  */
-int CameraHandler::setConfigAction(GPhotoParams *p, const char *name, const char *value) {
+int QTLCamera::setConfigAction(GPhotoParams *p, const char *name, const char *value) {
     CameraWidget *rootConfig,*child;
     int rc;
     const char *label;
@@ -233,7 +258,7 @@ int CameraHandler::setConfigAction(GPhotoParams *p, const char *name, const char
 /**
  * @brief CameraHandler::captureImage
  */
-void CameraHandler::captureImage() { /*
+void QTLCamera::captureImage() { /*
     // Set camera paramaters if changed
     if (params_changed) {
         cout << "Setting camera paramaters:" << endl;
@@ -380,14 +405,14 @@ void CameraHandler::captureImage() { /*
 /**
  * @brief CameraHandler::_captureImage
  */
-void CameraHandler::_captureImage() {}
+void QTLCamera::_captureImage() {}
 
 /**
  * @brief CameraHandler::_deleteImage
  */
-void CameraHandler::_deleteImage() {}
+void QTLCamera::_deleteImage() {}
 
 /**
  * @brief CameraHandler::_updateParams
  */
-void CameraHandler::_updateParams() {}
+void QTLCamera::_updateParams() {}

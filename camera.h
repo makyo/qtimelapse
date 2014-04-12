@@ -3,6 +3,8 @@
 
 #include <gphoto2/gphoto2.h>
 
+using namespace std;
+
 typedef struct _GPhotoParams GPhotoParams;
 struct _GPhotoParams {
     Camera *camera;
@@ -14,17 +16,16 @@ struct _GPhotoParams {
     int debugFuncId;
 };
 
-/*
- * CameraHandler
- *
- * Handle interaction with the camera
+/**
+ * @brief The Camera class
  */
-class CameraHandler {
+class QTLCamera {
 public:
-    CameraHandler();
+    QTLCamera();
 
-    void GPhotoParamsInit(GPhotoParams *g);
     void setWorkingDirectory(const char *);
+    int detectCamera();
+    int initCamera();
     int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
     int setConfigAction(GPhotoParams *p,const char *name, const char *value);
     void captureImage();
@@ -35,6 +36,13 @@ private:
     void _deleteImage();
 
     char *workingDirectory;
+    GPhotoParams *params;
+};
+
+enum CAMERA_STATUS {
+    CAMERA_OK,
+    CAMERA_NOT_FOUND,
+    CAMERA_NOT_INITIALIZED
 };
 
 #endif // CAMERAHANDLER_H

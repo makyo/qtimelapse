@@ -1,4 +1,4 @@
-#include "qtimelapse.h"
+#include "app.h"
 #include "ui_qtimelapse.h"
 
 QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeLapse) {
@@ -15,15 +15,28 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     p.framesPerInterval = 1;
     p.maxRuntime = 0;
     p.maxFrames = 10;
+    p.retrieveImages = true;
+    p.deleteImages = true;
     timeLapse->setParams(&p);
 
-    // Handler for the user's camera.
-    cameraHandler = new CameraHandler();
     //TODO attempt to detect camera
+    timeLapse->camera = new QTLCamera();
+    //handleCameraDetect(timeLapse->camera->detectCamera());
 }
 
 QTimeLapse::~QTimeLapse() {
     delete ui;
+}
+
+/**
+ * @brief QTimeLapse::handleCameraDetect
+ * @param rc
+ */
+void QTimeLapse::handleCameraDetect(int rc) {
+    if (rc == 0) {
+        return;
+    }
+    return;
 }
 
 /****************************************************************************************
@@ -91,10 +104,18 @@ void QTimeLapse::on_btn_chooseLocation_clicked() {
     QString fileName;
      if (fileDialog_workingDirectory->exec()) {
          fileName = fileDialog_workingDirectory->selectedFiles().at(0);
-         cameraHandler->setWorkingDirectory(fileName.toStdString().c_str());
-         this->setStatusTip("Working directory set to: " + fileName);
+         timeLapse->camera->setWorkingDirectory(fileName.toStdString().c_str());
+         setStatusTip("Working directory set to: " + fileName);
      }
 }
+
+/****************************************************************************************
+ *
+ * Time Lapse Settings tab
+ *
+ *     Input fields
+ *
+ ***************************************************************************************/
 
 /**
  * @brief QTimeLapse::on_input_interval_textChanged
@@ -128,4 +149,28 @@ void QTimeLapse::on_input_maxRuntime_textChanged(const QString &runtime) {
  */
 void QTimeLapse::on_input_maxFrames_textChanged(const QString &frames) {
     timeLapse->setMaxFrames(frames.toInt());
+}
+
+/****************************************************************************************
+ *
+ * Camera Settings tab
+ *
+ *     Global settings
+ *
+ ***************************************************************************************/
+
+/**
+ * @brief QTimeLapse::on_chk_retrieveImages_toggled
+ * @param checked
+ */
+void QTimeLapse::on_chk_retrieveImages_toggled(bool checked) {
+    timeLapse->setRetrieveImages(checked);
+}
+
+/**
+ * @brief QTimeLapse::on_chk_deleteImages_toggled
+ * @param checked
+ */
+void QTimeLapse::on_chk_deleteImages_toggled(bool checked) {
+    timeLapse->setDeleteImages(checked);
 }
