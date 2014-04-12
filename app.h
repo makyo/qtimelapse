@@ -19,9 +19,11 @@ public:
     explicit QTimeLapse(QWidget *parent = 0);
     ~QTimeLapse();
 
-    void handleCameraDetect(Error);
+    void handleCameraDetect(QTLError);
 
 private slots:
+    void displayCameraSettings();
+
     void on_actionExit_triggered();
     void on_actionDetect_Camera_triggered();
 

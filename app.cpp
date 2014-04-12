@@ -32,16 +32,26 @@ QTimeLapse::~QTimeLapse() {
  * @brief QTimeLapse::handleCameraDetect
  * @param rc
  */
-void QTimeLapse::handleCameraDetect(Error e) {
+void QTimeLapse::handleCameraDetect(QTLError e) {
     if (e.rc != GP_OK) {
-        /*char *mesg;
-        sprintf(mesg, "There was an error detecting your camera: %i - %s",
-                e.rc,
-                e.errorText);*/
+        ui->btn_captureImage->setEnabled(false);
+        ui->btn_start->setEnabled(false);
+        ui->btn_stop->setEnabled(false);
+        setFieldsEnabled(false);
         QMessageBox::warning(this,
                              "Error Detecting Camera",
                              e.errorText);
+    } else {
+        ui->btn_captureImage->setEnabled(true);
+        ui->btn_start->setEnabled(true);
+        ui->btn_stop->setEnabled(false);
+        setFieldsEnabled(true);
+        displayCameraSettings();
     }
+}
+
+void QTimeLapse::displayCameraSettings() {
+
 }
 
 /****************************************************************************************

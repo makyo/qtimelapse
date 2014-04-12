@@ -3,6 +3,9 @@
 
 #include "camera.h"
 
+/**
+ * @brief TimeLapseParams
+ */
 typedef struct _TimeLapseParams TimeLapseParams;
 struct _TimeLapseParams {
     int interval;
@@ -14,6 +17,9 @@ struct _TimeLapseParams {
     bool deleteImages;
 };
 
+/**
+ * @brief The TimeLapse class
+ */
 class TimeLapse {
 public:
     TimeLapse();

@@ -490,6 +490,56 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>mainView</tabstop>
+  <tabstop>btn_captureImage</tabstop>
+  <tabstop>btn_start</tabstop>
+  <tabstop>btn_stop</tabstop>
+  <tabstop>btn_chooseLocation</tabstop>
+  <tabstop>input_interval</tabstop>
+  <tabstop>input_framesPerInterval</tabstop>
+  <tabstop>input_maxRuntime</tabstop>
+  <tabstop>input_maxFrames</tabstop>
+  <tabstop>chk_retrieveImages</tabstop>
+  <tabstop>chk_deleteImages</tabstop>
+  <tabstop>preview17</tabstop>
+  <tabstop>preview16</tabstop>
+  <tabstop>preview6</tabstop>
+  <tabstop>capturePreview</tabstop>
+  <tabstop>preview7</tabstop>
+  <tabstop>preview4</tabstop>
+  <tabstop>preview10</tabstop>
+  <tabstop>preview34</tabstop>
+  <tabstop>preview36</tabstop>
+  <tabstop>preview35</tabstop>
+  <tabstop>preview25</tabstop>
+  <tabstop>preview13</tabstop>
+  <tabstop>preview12</tabstop>
+  <tabstop>preview31</tabstop>
+  <tabstop>preview19</tabstop>
+  <tabstop>preview5</tabstop>
+  <tabstop>preview18</tabstop>
+  <tabstop>preview11</tabstop>
+  <tabstop>preview27</tabstop>
+  <tabstop>preview1</tabstop>
+  <tabstop>preview26</tabstop>
+  <tabstop>preview2</tabstop>
+  <tabstop>preview3</tabstop>
+  <tabstop>preview8</tabstop>
+  <tabstop>preview9</tabstop>
+  <tabstop>preview14</tabstop>
+  <tabstop>preview15</tabstop>
+  <tabstop>preview20</tabstop>
+  <tabstop>preview21</tabstop>
+  <tabstop>preview32</tabstop>
+  <tabstop>preview33</tabstop>
+  <tabstop>preview22</tabstop>
+  <tabstop>preview28</tabstop>
+  <tabstop>preview23</tabstop>
+  <tabstop>preview29</tabstop>
+  <tabstop>preview24</tabstop>
+  <tabstop>preview30</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -2,15 +2,34 @@
 #define CAMERAHANDLER_H
 
 #include <gphoto2/gphoto2.h>
+#include <vector>
 
 using namespace std;
 
-typedef struct _Error Error;
-struct _Error {
+/**
+ * @brief QTLError
+ */
+typedef struct _QTLError QTLError;
+struct _QTLError {
     int rc;
-     const char *errorText;
+    const char *errorText;
 };
 
+/**
+ * @brief QTLWidget
+ */
+typedef struct _QTLWidget QTLWidget;
+struct _QTLWidget {
+    CameraWidget *widget;
+    const char *title;
+    const char *defaultChoice;
+    const char *choiceLabel;
+    vector<const char *> choices;
+};
+
+/**
+ * @brief GPhotoParams
+ */
 typedef struct _GPhotoParams GPhotoParams;
 struct _GPhotoParams {
     Camera *camera;
@@ -20,6 +39,7 @@ struct _GPhotoParams {
     CameraAbilitiesList *abilitiesList;
     GPPortInfoList *portInfoList;
     int debugFuncId;
+    vector<QTLWidget> *widgetList;
 };
 
 /**
@@ -30,16 +50,17 @@ public:
     QTLCamera();
 
     void setWorkingDirectory(const char *);
-    Error detectCamera();
-    Error initCamera();
-    int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
-    int setConfigAction(GPhotoParams *p,const char *name, const char *value);
+    QTLError detectCamera();
+    QTLError initCamera();
+    int findWidgetByName(const char *, CameraWidget **, CameraWidget **);
+    int setConfigAction(const char *name, const char *value);
     void captureImage(bool retrieveImages, bool deleteImages);
 
 private:
     void _updateParams();
     void _captureImage(bool retrieveImage);
-    Error _deleteImage();
+    QTLError _deleteImage();
+    void getWidgets(vector<QTLWidget> *, CameraWidget *, char *);
 
     char *workingDirectory;
     GPhotoParams *params;

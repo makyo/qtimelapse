@@ -16,22 +16,24 @@ QTLCamera::QTLCamera() {
     cout << "Attempting to initialize camera..." << endl;
     params->context = gp_context_new();
     params->abilitiesList = NULL;
+    params->widgetList = new vector<QTLWidget>();
 }
 
 void QTLCamera::setWorkingDirectory(const char *wd) {
     strcpy(workingDirectory, wd);
 }
 
-Error QTLCamera::detectCamera() {
+QTLError QTLCamera::detectCamera() {
     // Close connection to camera
     gp_camera_exit(params->camera, params->context);
+    params->widgetList->clear();
 
     // Set up camera paramaters
     return initCamera();
 }
 
-Error QTLCamera::initCamera() {
-    Error result;
+QTLError QTLCamera::initCamera() {
+    QTLError result;
     result.rc = GP_OK;
     result.errorText = "Camera initialized.";
 
@@ -58,8 +60,101 @@ Error QTLCamera::initCamera() {
                     "is unmounted and that no other applications are using it, then " \
                     "re-initialise or restart the program to enable camera paramaters.";
         }
+    } else {
+        cout << "Camera detected" << endl;
+        cout << "Detecting widgets"<< endl;
+        CameraWidget *rootConfig;
+        result.rc = gp_camera_get_config(params->camera, &rootConfig, params->context);
+        if (result.rc == GP_OK) {
+            char prefix[] = "";
+            getWidgets(params->widgetList, rootConfig, prefix);
+            gp_widget_free(rootConfig);
+        }
+        cout << "Widgets detected" << endl;
     }
+
     return result;
+}
+
+void QTLCamera::getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
+                           char *prefix) {
+    int rc, n;
+    char *newprefix;
+    const char *label, *name, *uselabel;
+    CameraWidgetType type;
+    CameraWidget *rootConfig, *child;
+    QTLWidget qtlWidget;
+
+    gp_widget_get_label(widget, &label);
+    gp_widget_get_name(widget, &name);
+    gp_widget_get_type(widget, &type);
+
+    if (strlen(name)) {
+        uselabel = name;
+    } else {
+        uselabel = label;
+    }
+
+    n = gp_widget_count_children(widget);
+
+    newprefix = new char[strlen(prefix) + 1 + strlen(uselabel) + 1];
+
+    if (!newprefix) {
+        return;
+    }
+
+    sprintf(newprefix, "%s/%s", prefix, uselabel);
+
+    //XXX Was this supposed to be a conditional for the whole section?
+    // Assuming yes due to indenting.
+    cout << "  Detected widget: " << uselabel << endl;
+    if ((type != GP_WIDGET_WINDOW) && (type != GP_WIDGET_SECTION)) {
+        rc = findWidgetByName(uselabel, &child, &rootConfig);
+        rc = gp_widget_get_type(child, &type);
+        rc = gp_widget_get_label(child, &label);
+
+        if (type == GP_WIDGET_RADIO) {
+            int count, i;
+            char *current;
+
+            rc = gp_widget_get_value(child, &current);
+            if (rc == GP_OK) {
+                count = gp_widget_count_choices(child);
+                if (type == GP_WIDGET_MENU) {
+                } else {
+
+                    for (i=0; i<count; i++) {
+                        const char *choice;
+                        rc = gp_widget_get_choice(child, i, &choice);
+                        qtlWidget.choices.push_back(choice);
+                        cout << "    Detected choice: " << choice << endl;
+                    }
+
+                    qtlWidget.title = label;
+                    qtlWidget.defaultChoice = current;
+                    qtlWidget.choiceLabel = uselabel;
+
+                    //XXX do we need this?
+                    /*
+                    wxString mystring(uselabel, wxConvUTF8);
+                    choice_label_vector.push_back(mystring);
+                    */
+
+                    params->widgetList->push_back(qtlWidget);
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < n; i++) {
+        CameraWidget *child;
+        rc = gp_widget_get_child(widget, i, &child);
+        if (rc != GP_OK) {
+            continue;
+        }
+        getWidgets(widgetList, child, newprefix);
+    }
+    free(newprefix);
 }
 
 /**
@@ -70,10 +165,10 @@ Error QTLCamera::initCamera() {
  * @param rootConfig
  * @return
  */
-int QTLCamera::findWidgetByName(GPhotoParams *p, const char *name, CameraWidget **child,
+int QTLCamera::findWidgetByName(const char *name, CameraWidget **child,
                      CameraWidget **rootConfig) {
     int rc;
-    rc = gp_camera_get_config(p->camera, rootConfig, p->context);
+    rc = gp_camera_get_config(params->camera, rootConfig, params->context);
     if (rc != GP_OK) {
         return rc;
     }
@@ -138,13 +233,13 @@ int QTLCamera::findWidgetByName(GPhotoParams *p, const char *name, CameraWidget 
  * @param value
  * @return
  */
-int QTLCamera::setConfigAction(GPhotoParams *p, const char *name, const char *value) {
+int QTLCamera::setConfigAction(const char *name, const char *value) {
     CameraWidget *rootConfig,*child;
     int rc;
     const char *label;
     CameraWidgetType type;
 
-    rc = findWidgetByName(p, name, &child, &rootConfig);
+    rc = findWidgetByName(name, &child, &rootConfig);
     if (rc != GP_OK) {
         return rc;
     }
@@ -251,7 +346,7 @@ int QTLCamera::setConfigAction(GPhotoParams *p, const char *name, const char *va
         break;
     }
     if (rc == GP_OK) {
-        rc = gp_camera_set_config(p->camera, rootConfig, p->context);
+        rc = gp_camera_set_config(params->camera, rootConfig, params->context);
         //if (ret != GP_OK)
             //gp_context_error(p->context, _("Failed to set new configuration value %s for configuration entry %s."), value, name);
     }
@@ -383,7 +478,7 @@ void QTLCamera::_captureImage(bool retrieveImage) {/*
 /**
  * @brief CameraHandler::_deleteImage
  */
-Error QTLCamera::_deleteImage() {/*
+QTLError QTLCamera::_deleteImage() {/*
     Error result;
     result.rc = gp_camera_file_delete(params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), params.context);
     if (result.rc != GP_OK) {
