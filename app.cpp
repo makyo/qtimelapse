@@ -21,7 +21,7 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
 
     //TODO attempt to detect camera
     timeLapse->camera = new QTLCamera();
-    //handleCameraDetect(timeLapse->camera->detectCamera());
+    handleCameraDetect(timeLapse->camera->initCamera());
 }
 
 QTimeLapse::~QTimeLapse() {
@@ -32,11 +32,16 @@ QTimeLapse::~QTimeLapse() {
  * @brief QTimeLapse::handleCameraDetect
  * @param rc
  */
-void QTimeLapse::handleCameraDetect(int rc) {
-    if (rc == 0) {
-        return;
+void QTimeLapse::handleCameraDetect(Error e) {
+    if (e.rc != GP_OK) {
+        /*char *mesg;
+        sprintf(mesg, "There was an error detecting your camera: %i - %s",
+                e.rc,
+                e.errorText);*/
+        QMessageBox::warning(this,
+                             "Error Detecting Camera",
+                             e.errorText);
     }
-    return;
 }
 
 /****************************************************************************************
@@ -49,14 +54,14 @@ void QTimeLapse::handleCameraDetect(int rc) {
  * @brief QTimeLapse::on_actionDetect_Camera_triggered
  */
 void QTimeLapse::on_actionDetect_Camera_triggered() {
-    // detect camera
+    handleCameraDetect(timeLapse->camera->detectCamera());
 }
 
 /**
  * @brief QTimeLapse::on_actionExit_triggered
  */
 void QTimeLapse::on_actionExit_triggered() {
-    this->destroy();
+    destroy();
 }
 
 /****************************************************************************************

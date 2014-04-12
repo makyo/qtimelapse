@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QMainWindow>
+#include <QMessageBox>
 
 #include "camera.h"
 #include "timelapse.h"
@@ -18,7 +19,7 @@ public:
     explicit QTimeLapse(QWidget *parent = 0);
     ~QTimeLapse();
 
-    void handleCameraDetect(int);
+    void handleCameraDetect(Error);
 
 private slots:
     void on_actionExit_triggered();

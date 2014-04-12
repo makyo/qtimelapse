@@ -5,6 +5,12 @@
 
 using namespace std;
 
+typedef struct _Error Error;
+struct _Error {
+    int rc;
+     const char *errorText;
+};
+
 typedef struct _GPhotoParams GPhotoParams;
 struct _GPhotoParams {
     Camera *camera;
@@ -24,8 +30,8 @@ public:
     QTLCamera();
 
     void setWorkingDirectory(const char *);
-    int detectCamera();
-    int initCamera();
+    Error detectCamera();
+    Error initCamera();
     int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
     int setConfigAction(GPhotoParams *p,const char *name, const char *value);
     void captureImage();

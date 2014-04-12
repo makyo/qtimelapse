@@ -13,17 +13,15 @@ QTLCamera::QTLCamera() {
     memset(params, 0, sizeof(GPhotoParams));
     params->folder = strdup("/");
     cout << "Attempting to initialize camera..." << endl;
-    gp_camera_new(&params->camera);
     params->context = gp_context_new();
     params->abilitiesList = NULL;
-    initCamera();
 }
 
 void QTLCamera::setWorkingDirectory(const char *wd) {
     strcpy(workingDirectory, wd);
 }
 
-int QTLCamera::detectCamera() {
+Error QTLCamera::detectCamera() {
     // Close connection to camera
     gp_camera_exit(params->camera, params->context);
 
@@ -31,31 +29,36 @@ int QTLCamera::detectCamera() {
     return initCamera();
 }
 
-int QTLCamera::initCamera() {
+Error QTLCamera::initCamera() {
+    Error result;
+    result.rc = GP_OK;
+    result.errorText = "Camera initialized.";
 
     // Set aside memory for camera
-    int result = gp_camera_new(&params->camera);
-    if (result != GP_OK) {
-        cout << "Failed to create camera:\t" << result << endl << gp_result_as_string(result) << endl;
+    result.rc = gp_camera_new(&params->camera);
+    if (result.rc != GP_OK) {
+        result.errorText = gp_result_as_string(result.rc);
         return result;
     }
 
     // Initialise camera
     cout << "Detecting Camera." << endl << endl;
-    result = gp_camera_init(params->camera, params->context);
+    result.rc = gp_camera_init(params->camera, params->context);
 
-    if (result != GP_OK) {
+    if (result.rc != GP_OK) {
+        result.errorText = gp_result_as_string(result.rc);
 
-        if (result == -105) {
-            cout << "Failed to initialise camera. Please check the camera is turned on, then re-initialise or restart the program to enable camera paramaters.";
-            return CAMERA_NOT_FOUND;
-        } else if (result == -60 || result == -53) {
-            cout << "Failed to initialise camera. Please check the camera is unmounted and that no other applications are using it, then re-initialise or restart the program to enable camera paramaters.";
-            return CAMERA_NOT_INITIALIZED;
+        if (result.rc == -105) {
+            result.errorText = "Failed to initialise camera. Please check the camera " \
+                    "is turned on, then re-initialise or restart the program to enable" \
+                    " camera paramaters.";
+        } else if (result.rc == -60 || result.rc == -53) {
+            result.errorText = "Failed to initialise camera. Please check the camera " \
+                    "is unmounted and that no other applications are using it, then " \
+                    "re-initialise or restart the program to enable camera paramaters.";
         }
     }
-    cout << "Camera initialised." << endl;
-    return CAMERA_OK;
+    return result;
 }
 
 /**
