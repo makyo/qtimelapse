@@ -19,8 +19,11 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     p.deleteImages = true;
     timeLapse->setParams(&p);
 
-    //TODO attempt to detect camera
     timeLapse->camera = new QTLCamera();
+    char cwd[FILENAME_MAX];
+    GetCurrentDir(cwd, sizeof(cwd));
+    cwd[sizeof(cwd) - 1] = '\0';
+    timeLapse->camera->setWorkingDirectory(cwd);
     handleCameraDetect(timeLapse->camera->initCamera());
 }
 
