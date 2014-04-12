@@ -77,6 +77,9 @@ void QTimeLapse::on_actionExit_triggered() {
  */
 void QTimeLapse::on_btn_captureImage_clicked() {
     //TODO try to capture a preview image
+    // Temporary solution: start, then stop.
+    on_btn_start_clicked();
+    on_btn_stop_clicked();
 }
 
 /**
@@ -84,11 +87,15 @@ void QTimeLapse::on_btn_captureImage_clicked() {
  */
 void QTimeLapse::on_btn_start_clicked() {
     //TODO try to start capturing
-        //TODO disable start button
-        //TODO disable capture button
-        //TODO disable fields
-        //TODO enable stop button
-    //TODO else warn
+    if (true) {
+        ui->btn_start->setEnabled(false);
+        ui->btn_captureImage->setEnabled(false);
+        ui->btn_chooseLocation->setEnabled(false);
+        setFieldsEnabled(false);
+        ui->btn_stop->setEnabled(true);
+    } else {
+        //TODO else warn
+    }
 }
 
 /**
@@ -96,10 +103,12 @@ void QTimeLapse::on_btn_start_clicked() {
  */
 void QTimeLapse::on_btn_stop_clicked() {
     //TODO stop capturing
-    //TODO enable start button
-    //TODO enable capture button
-    //TODO enable fields
-    //TODO disable stop button
+    ui->btn_start->setEnabled(true);
+    ui->btn_captureImage->setEnabled(true);
+    ui->btn_chooseLocation->setEnabled(true);
+    setFieldsEnabled(true);
+
+    ui->btn_stop->setEnabled(false);
 }
 
 /**
@@ -121,6 +130,17 @@ void QTimeLapse::on_btn_chooseLocation_clicked() {
  *     Input fields
  *
  ***************************************************************************************/
+
+/**
+ * @brief QTimeLapse::setFieldsEnabled
+ * @param enabled
+ */
+void QTimeLapse::setFieldsEnabled(bool enabled) {
+    ui->input_interval->setEnabled(enabled);
+    ui->input_framesPerInterval->setEnabled(enabled);
+    ui->input_maxRuntime->setEnabled(enabled);
+    ui->input_maxFrames->setEnabled(enabled);
+}
 
 /**
  * @brief QTimeLapse::on_input_interval_textChanged

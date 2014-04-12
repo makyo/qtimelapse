@@ -29,10 +29,13 @@ private slots:
     void on_btn_start_clicked();
     void on_btn_stop_clicked();
     void on_btn_chooseLocation_clicked();
+
+    void setFieldsEnabled(bool);
     void on_input_interval_textChanged(const QString &);
     void on_input_framesPerInterval_textChanged(const QString &);
     void on_input_maxRuntime_textChanged(const QString &);
     void on_input_maxFrames_textChanged(const QString &);
+
     void on_chk_retrieveImages_toggled(bool checked);
     void on_chk_deleteImages_toggled(bool checked);
 

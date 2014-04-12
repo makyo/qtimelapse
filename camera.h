@@ -34,15 +34,16 @@ public:
     Error initCamera();
     int findWidgetByName(GPhotoParams *p, const char *, CameraWidget **, CameraWidget **);
     int setConfigAction(GPhotoParams *p,const char *name, const char *value);
-    void captureImage();
+    void captureImage(bool retrieveImages, bool deleteImages);
 
 private:
     void _updateParams();
-    void _captureImage();
-    void _deleteImage();
+    void _captureImage(bool retrieveImage);
+    Error _deleteImage();
 
     char *workingDirectory;
     GPhotoParams *params;
+    bool paramsChanged;
 };
 
 enum CAMERA_STATUS {

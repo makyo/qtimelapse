@@ -2,6 +2,7 @@
 #include <string.h>
 #include <cstdlib>
 #include <stdio.h>
+#include <vector>
 
 #include "camera.h"
 
@@ -261,27 +262,40 @@ int QTLCamera::setConfigAction(GPhotoParams *p, const char *name, const char *va
 /**
  * @brief CameraHandler::captureImage
  */
-void QTLCamera::captureImage() { /*
+void QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
     // Set camera paramaters if changed
-    if (params_changed) {
-        cout << "Setting camera paramaters:" << endl;
-        for (unsigned int v = 0; v < choice_label_vector.size(); v++) {
-            cout << "Paramater:\t" << choice_label_vector[v].mb_str() << endl;
-            cout << "Value:\t\t" << combobox_vector[v]->GetValue().mb_str() << endl;
-
-            int set = set_config_action(&gp_params, choice_label_vector[v].mb_str(),
-                                        combobox_vector[v]->GetValue().mb_str());
-            if (set == GP_OK) {
-                //cout << "OK" <<  endl;
-            } else {
-                cout << "Error setting paramater:\t" << set << endl;
-            }
-        }
-        params_changed = false;
-        cout << endl;
+    if (paramsChanged) {
+        _updateParams();
     }
 
     // Now take picture
+    _captureImage(retrieveImages);
+
+    // Display the last image in the GUI
+    /*
+    if (result == GP_OK && tb1->IsChecked()) {
+
+        wxString name(path.name, wxConvUTF8);
+        wxBitmap bitmap;
+        wxImage image = bitmap.ConvertToImage();
+
+        if (!image.LoadFile(name, wxBITMAP_TYPE_ANY, -1)) {
+            cout << "Couldn't load image." << endl;
+            } else {
+            image.Rescale(resize_x, resize_y);
+                retrieved_image = wxBitmap(image);
+            small_images.push_back(wxBitmap(image.Rescale(90,60)));
+            if(small_images.size() > 48) {
+                small_images.erase(small_images.begin());
+            }
+        }
+    }*/
+}
+
+/**
+ * @brief CameraHandler::_captureImage
+ */
+void QTLCamera::_captureImage(bool retrieveImage) {/*
     cout << "Capturing Image..." << endl;
     CameraFile * camera_file;
     CameraFilePath path;
@@ -296,33 +310,22 @@ void QTLCamera::captureImage() { /*
 
     for (int f = 0; f < frames_per_int; f++) {
 
-        result = gp_camera_capture(gp_params.camera, GP_CAPTURE_IMAGE, &path, gp_params.context);
+        result = gp_camera_capture(params.camera, GP_CAPTURE_IMAGE, &path, params.context);
 
         if (result != GP_OK) {
             cout << "Could not capture image:\t" << result << endl;
             cout << "Check the camera and re-initialise." << endl;
-            wxLogError(wxT("Could not capture an image. Please check the camera and re-initialise."));
+            cout << "Could not capture an image. Please check the camera and re-initialise.";
             start_capture = false;
-            gp_camera_exit(gp_params.camera, gp_params.context);
-            button2->Disable();
-            button3->Disable();
-            button4->Disable();
+            gp_camera_exit(params.camera, params.context);
         } else {
             total_frames++;
             cout << "New file is in location " << path.folder << "/" << path.name << " on the camera." << endl;
-            wxString status = (wxString::FromAscii("New file is in location "));
-            status.Append(wxString::FromAscii(path.folder));
-            status.Append(wxString::FromAscii("/"));
-            status.Append(wxString::FromAscii(path.name));
-            status.Append(wxString::FromAscii(" on the camera."));
-            this->SetStatusText(status);
-
             camera_files.push_back(path.name);
             camera_folders.push_back(path.folder);
         }
     }
 
-    // Now get and delete images
     if (camera_files.size()) {
 
         for (unsigned int f = 0; f < camera_files.size(); f++) {
@@ -333,9 +336,9 @@ void QTLCamera::captureImage() { /*
             gp_file_new(&camera_file);
 
             // Retrieve image if checkbox is ticked
-            if (tb1->IsChecked()) {
+            if (retrieveImages) {
 
-                result = gp_camera_file_get(gp_params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), GP_FILE_TYPE_NORMAL, camera_file, gp_params.context);
+                result = gp_camera_file_get(params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), GP_FILE_TYPE_NORMAL, camera_file, params.context);
 
                 if (result != GP_OK) {
                     cout << "Could not retieve image:\t" << result << endl;
@@ -367,55 +370,49 @@ void QTLCamera::captureImage() { /*
                     }
 
                     // Delete image from camera if checkbox is ticked
-                    if (tb2->IsChecked()) {
-
-                        result = gp_camera_file_delete(gp_params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), gp_params.context);
-                        if (result != GP_OK) {
-                            cout << "Problem deleting file from camera." << endl;
-                            wxString status = (wxString::FromAscii("Problem deleting file from camera."));
-                            this->SetStatusText(status);
-                        } else {
-                            cout << "File " << camera_files[f] << " deleted from camera." << endl;
-                            gp_file_unref(camera_file);
-                        }
+                    if (deleteImages) {
+                        _deleteImage();
                     }
                     cout << endl;
                 }
             }
         }
     }
-
-    // Display the last image in the GUI
-    if (result == GP_OK && tb1->IsChecked()) {
-
-        wxString name(path.name, wxConvUTF8);
-        wxBitmap bitmap;
-        wxImage image = bitmap.ConvertToImage();
-
-        if (!image.LoadFile(name, wxBITMAP_TYPE_ANY, -1)) {
-            cout << "Couldn't load image." << endl;
-            } else {
-            image.Rescale(resize_x, resize_y);
-                retrieved_image = wxBitmap(image);
-            small_images.push_back(wxBitmap(image.Rescale(90,60)));
-            if(small_images.size() > 48) {
-                small_images.erase(small_images.begin());
-            }
-        }
-    }*/
-}
-
-/**
- * @brief CameraHandler::_captureImage
- */
-void QTLCamera::_captureImage() {}
+*/}
 
 /**
  * @brief CameraHandler::_deleteImage
  */
-void QTLCamera::_deleteImage() {}
+Error QTLCamera::_deleteImage() {/*
+    Error result;
+    result.rc = gp_camera_file_delete(params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), params.context);
+    if (result.rc != GP_OK) {
+        result.errorText = gp_result_as_string(result.rc);
+        cout << "Problem deleting file from camera." << endl;
+        cout << "Problem deleting file from camera." << result.errorText << endl;
+    } else {
+        cout << "File " << camera_files[f] << " deleted from camera." << endl;
+        gp_file_unref(camera_file);
+    }}
+*/}
 
 /**
  * @brief CameraHandler::_updateParams
  */
-void QTLCamera::_updateParams() {}
+void QTLCamera::_updateParams() {/*
+    cout << "Setting camera paramaters:" << endl;
+    for (unsigned int v = 0; v < choice_label_vector.size(); v++) {
+        cout << "Paramater:\t" << choice_label_vector[v].mb_str() << endl;
+        cout << "Value:\t\t" << combobox_vector[v]->GetValue().mb_str() << endl;
+
+        int set = set_config_action(&params, choice_label_vector[v].mb_str(),
+                                    combobox_vector[v]->GetValue().mb_str());
+        if (set == GP_OK) {
+            //cout << "OK" <<  endl;
+        } else {
+            cout << "Error setting paramater:\t" << set << endl;
+        }
+    }
+    paramsChanged = false;
+    cout << endl;
+*/}
