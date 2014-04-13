@@ -4,7 +4,9 @@ title: QTimeLapse
 ---
 
 <div id="home">
-  <h1>Blog Posts</h1>
+    <p><em>QTimeLapse is a Qt/GPhoto-based program that can use an external camera to take repeated pictures at certain intervals with the intention of stringing them together into a timelapse movie. It is based heavily on Tim Nugent's GTimeLapse.</em></p>
+    <p>The goals of QTimeLapse are to create a simple, flexible time-lapse program that is both easy to use and easy to contribute to. GTimeLapse was a great program, but development has stalled, as has the previous iteration of a Qt time-lapse program (https://launchpad.net/qtimelapse). To this end, this is a Qt Creator project that can be build upon by anyone, making it easy for developers to add features and for users to install.</p>
+  <h1>Posts</h1>
   <ul class="posts">
     {% for post in site.posts %}
       <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="/qtimelapse/{{ post.url }}">{{ post.title }}</a></li>
