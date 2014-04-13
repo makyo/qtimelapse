@@ -55,12 +55,12 @@ public:
     QTLError initCamera();
     int findWidgetByName(const char *, CameraWidget **, CameraWidget **);
     int setConfigAction(const char *, const char *);
-    void captureImage(bool, bool);
+    string captureImage(bool, bool);
     vector<QTLWidget> *getWidgets();
 
 private:
     void _updateParams();
-    void _captureImage(string, bool, bool);
+    string _captureImage(string, bool, bool);
     QTLError _deleteImage(CameraFilePath *, CameraFile *);
     void _getWidgets(vector<QTLWidget> *, CameraWidget *, char *);
 

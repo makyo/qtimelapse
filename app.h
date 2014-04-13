@@ -4,10 +4,13 @@
 #include <QComboBox>
 #include <QFileDialog>
 #include <QFormLayout>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include <QLabel>
 #include <QLayoutItem>
 #include <QMainWindow>
 #include <QMessageBox>
+#include <QPixmap>
 
 #include <stdio.h>
 #ifdef WINDOWS
@@ -58,6 +61,7 @@ private:
     Ui::QTimeLapse *ui;
     QFileDialog *fileDialog_workingDirectory;
     TimeLapse *timeLapse;
+    QGraphicsScene *previewScene;
 };
 
 #endif // QTIMELAPSE_H

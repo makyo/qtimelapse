@@ -116,8 +116,16 @@ void QTimeLapse::on_actionExit_triggered() {
  * @brief QTimeLapse::on_btn_captureImage_clicked
  */
 void QTimeLapse::on_btn_captureImage_clicked() {
-    //TODO try to capture a preview image
-    timeLapse->preview();
+    QString previewFile = QString(timeLapse->preview().c_str());
+    QPixmap *preview = new QPixmap(previewFile);
+    if (ui->capturePreview->scene()) {
+        delete ui->capturePreview->scene();
+    }
+    previewScene = new QGraphicsScene();
+    previewScene->addPixmap(
+                preview->scaled(ui->capturePreview->size(), Qt::KeepAspectRatio));
+    previewScene->setSceneRect(preview->rect());
+    ui->capturePreview->setScene(previewScene);
 }
 
 /**

@@ -93,6 +93,6 @@ int TimeLapse::stop() {
  * @brief TimeLapse::preview
  * @return
  */
-int TimeLapse::preview() {
-    camera->captureImage(false, true);
+string TimeLapse::preview() {
+    return camera->captureImage(true, true);
 }

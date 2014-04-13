@@ -17,6 +17,7 @@ QTLCamera::QTLCamera() {
     params->context = gp_context_new();
     params->abilitiesList = NULL;
     params->widgetList = new vector<QTLWidget>();
+    char workingDirectory[FILENAME_MAX];
 }
 
 void QTLCamera::setWorkingDirectory(const char *wd) {
@@ -365,14 +366,14 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
 /**
  * @brief CameraHandler::captureImage
  */
-void QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
+string QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
     // Set camera paramaters if changed
     if (paramsChanged) {
         _updateParams();
     }
 
     // Now take picture
-    _captureImage(workingDirectory, retrieveImages, deleteImages);
+    return _captureImage(workingDirectory, retrieveImages, deleteImages);
 
     // Display the last image in the GUI
     /*
@@ -396,9 +397,13 @@ void QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
 }
 
 /**
- * @brief CameraHandler::_captureImage
+ * @brief QTLCamera::_captureImage
+ * @param workingDirectory
+ * @param retrieveImages
+ * @param deleteImages
+ * @return
  */
-void QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bool deleteImages) {
+string QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bool deleteImages) {
     cout << "Capturing Image..." << endl;
     CameraFile *cameraFile;
     CameraFilePath path;
@@ -419,9 +424,7 @@ void QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bool
     }
 
     if (retrieveImages) {
-        //TODO
-        //string localPath = string(working_direcrory->GetPath().mb_str());
-        string localPath = string("");
+        string localPath = string(workingDirectory);
         localPath += "/";
         localPath += path.name;
         gp_file_new(&cameraFile);
@@ -449,7 +452,10 @@ void QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bool
             }
             cout << endl;
         }
+        cout << "Created local file " << localPath << endl;
+        return localPath;
     }
+    return string();
 }
 
 /**

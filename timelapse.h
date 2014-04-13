@@ -37,7 +37,7 @@ public:
 
     int start();
     int stop();
-    int preview();
+    string preview();
 
     QTLCamera *camera;
 
