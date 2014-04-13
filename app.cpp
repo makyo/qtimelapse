@@ -71,6 +71,16 @@ void QTimeLapse::displayCameraSettings() {
         QLabel *label = new QLabel(widget.title);
         settingsForm->addRow(label, comboBox);
     }
+
+    // Delete existing layout along with all of its widgets.
+    if (ui->grp_cameraSettings->layout() != NULL) {
+        QLayoutItem *item;
+        while ((item = ui->grp_cameraSettings->layout()->takeAt(0)) != NULL) {
+            delete item->widget();
+            delete item;
+        }
+        delete ui->grp_cameraSettings->layout();
+    }
     ui->grp_cameraSettings->setLayout(settingsForm);
 }
 

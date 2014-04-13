@@ -121,7 +121,7 @@ void QTLCamera::_getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
 
     //XXX Was this supposed to be a conditional for the whole section?
     // Assuming yes due to indenting.
-    cout << "  Detected widget: " << uselabel << endl;
+    cout << "\tDetected widget: " << uselabel << endl;
     if ((type != GP_WIDGET_WINDOW) && (type != GP_WIDGET_SECTION)) {
         rc = findWidgetByName(uselabel, &child, &rootConfig);
         rc = gp_widget_get_type(child, &type);
@@ -141,18 +141,12 @@ void QTLCamera::_getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
                         const char *choice;
                         rc = gp_widget_get_choice(child, i, &choice);
                         qtlWidget.choices.push_back(choice);
-                        cout << "    Detected choice: " << choice << endl;
+                        cout << "\t\tDetected choice: " << choice << endl;
                     }
 
                     qtlWidget.title = label;
                     qtlWidget.defaultChoice = current;
                     qtlWidget.choiceLabel = uselabel;
-
-                    //XXX do we need this?
-                    /*
-                    wxString mystring(uselabel, wxConvUTF8);
-                    choice_label_vector.push_back(mystring);
-                    */
 
                     params->widgetList->push_back(qtlWidget);
                 }

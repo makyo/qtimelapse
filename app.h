@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QLabel>
+#include <QLayoutItem>
 #include <QMainWindow>
 #include <QMessageBox>
 
