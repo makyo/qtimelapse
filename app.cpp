@@ -18,17 +18,22 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     p.retrieveImages = true;
     p.deleteImages = true;
     timeLapse->setParams(&p);
-
     timeLapse->camera = new QTLCamera();
+
+    // Set the working directory to the current directory.
     char cwd[FILENAME_MAX];
     GetCurrentDir(cwd, sizeof(cwd));
     cwd[sizeof(cwd) - 1] = '\0';
     timeLapse->camera->setWorkingDirectory(cwd);
+
+    // Attempt to initialize the camera.
     handleCameraDetect(timeLapse->camera->initCamera());
 
+    // Connections
     connect(timeLapse, &TimeLapse::passImageToApp, this,
             &QTimeLapse::receiveImageFromCapture);
 
+    // Add the preview views to the vector.
     capturePreviewViews.push_back(ui->preview1);
     capturePreviewViews.push_back(ui->preview2);
     capturePreviewViews.push_back(ui->preview3);
@@ -85,8 +90,8 @@ void QTimeLapse::handleCameraDetect(QTLError e) {
         ui->btn_stop->setEnabled(false);
         setFieldsEnabled(false);
         QMessageBox::warning(this,
-                             "Error Detecting Camera",
-                             e.errorText);
+                             tr( "Error Detecting Camera"),
+                             tr(e.errorText));
     } else {
         ui->btn_captureImage->setEnabled(true);
         ui->btn_start->setEnabled(true);
@@ -156,16 +161,7 @@ void QTimeLapse::on_actionExit_triggered() {
  * @brief QTimeLapse::on_btn_captureImage_clicked
  */
 void QTimeLapse::on_btn_captureImage_clicked() {
-    QString previewFile = QString(timeLapse->preview().c_str());
-    QPixmap *preview = new QPixmap(previewFile);
-    if (ui->capturePreview->scene()) {
-        delete ui->capturePreview->scene();
-    }
-    previewScene = new QGraphicsScene();
-    previewScene->addPixmap(
-                preview->scaled(ui->capturePreview->size(), Qt::KeepAspectRatio));
-    previewScene->setSceneRect(preview->rect());
-    ui->capturePreview->setScene(previewScene);
+    setPreview(QString(timeLapse->preview().c_str()));
 }
 
 /**
@@ -180,7 +176,28 @@ void QTimeLapse::on_btn_start_clicked() {
     ui->btn_stop->setEnabled(true);
 }
 
+/**
+ * @brief QTimeLapse::setPreview
+ */
+void QTimeLapse::setPreview(const QString &previewFile) {
+    QPixmap *preview = new QPixmap(previewFile);
+    if (ui->capturePreview->scene()) {
+        delete ui->capturePreview->scene();
+    }
+    previewScene = new QGraphicsScene();
+    previewScene->addPixmap(
+                preview->scaled(ui->capturePreview->size(), Qt::KeepAspectRatio));
+    previewScene->setSceneRect(preview->rect());
+    ui->capturePreview->setScene(previewScene);
+}
+
+/**
+ * @brief QTimeLapse::receiveImageFromCapture
+ * @param path
+ */
 void QTimeLapse::receiveImageFromCapture(const QString &path) {
+    setPreview(path);
+    ui->statusBar->showMessage("Captured image: " + path);
     capturePreviews.push_back(new QPixmap(path));
     if (capturePreviews.size() > 36) {
         capturePreviews.erase(capturePreviews.begin());
@@ -217,7 +234,7 @@ void QTimeLapse::on_btn_chooseLocation_clicked() {
      if (fileDialog_workingDirectory->exec()) {
          fileName = fileDialog_workingDirectory->selectedFiles().at(0);
          timeLapse->camera->setWorkingDirectory(fileName.toStdString().c_str());
-         setStatusTip("Working directory set to: " + fileName);
+         ui->statusBar->showMessage("Working directory set to: " + fileName);
      }
 }
 

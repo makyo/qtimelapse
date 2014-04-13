@@ -68,6 +68,8 @@ private:
     QGraphicsScene *previewScene;
     vector<QPixmap *> capturePreviews;
     vector<QGraphicsView *> capturePreviewViews;
+
+    void setPreview(const QString &);
 };
 
 #endif // QTIMELAPSE_H

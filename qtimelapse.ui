@@ -718,7 +718,7 @@
    </property>
    <widget class="QMenu" name="menuQTimeLapse">
     <property name="title">
-     <string>qTimeLapse</string>
+     <string>QTimeLapse</string>
     </property>
     <addaction name="actionDetect_Camera"/>
     <addaction name="actionExit"/>
