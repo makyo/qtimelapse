@@ -12,7 +12,7 @@ QTLCamera::QTLCamera() {
     params = new GPhotoParams();
     memset(params, 0, sizeof(GPhotoParams));
     params->folder = strdup("/");
-    qDebug() << "Attempting to initialize camera..." << endl;
+    qDebug() << "Attempting to initialize camera...";
     params->context = gp_context_new();
     params->abilitiesList = NULL;
     params->widgetList = new vector<QTLWidget>();
@@ -44,7 +44,7 @@ QTLError QTLCamera::initCamera() {
     }
 
     // Initialise camera
-    qDebug() << "Detecting Camera." << endl << endl;
+    qDebug() << "Detecting Camera.";
     result.rc = gp_camera_init(params->camera, params->context);
 
     if (result.rc != GP_OK) {
@@ -60,7 +60,7 @@ QTLError QTLCamera::initCamera() {
                     "re-initialise or restart the program to enable camera paramaters.";
         }
     } else {
-        qDebug() << "Camera detected" << endl;
+        qDebug() << "Camera detected";
         qDebug() << "Detecting widgets"<< endl;
         CameraWidget *rootConfig;
         result.rc = gp_camera_get_config(params->camera, &rootConfig, params->context);
@@ -69,7 +69,7 @@ QTLError QTLCamera::initCamera() {
             _getWidgets(params->widgetList, rootConfig, prefix);
             gp_widget_free(rootConfig);
         }
-        qDebug() << "Widgets detected" << endl;
+        qDebug() << "Widgets detected";
     }
 
     return result;
@@ -120,7 +120,7 @@ void QTLCamera::_getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
 
     //XXX Was this supposed to be a conditional for the whole section?
     // Assuming yes due to indenting.
-    qDebug() << "\tDetected widget: " << uselabel << endl;
+    qDebug() << "\tDetected widget: " << uselabel;
     if ((type != GP_WIDGET_WINDOW) && (type != GP_WIDGET_SECTION)) {
         rc = findWidgetByName(uselabel, &child, &rootConfig);
         rc = gp_widget_get_type(child, &type);
@@ -140,7 +140,7 @@ void QTLCamera::_getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
                         const char *choice;
                         rc = gp_widget_get_choice(child, i, &choice);
                         qtlWidget.choices.push_back(choice);
-                        qDebug() << "\t\tDetected choice: " << choice << endl;
+                        qDebug() << "\t\tDetected choice: " << choice;
                     }
 
                     qtlWidget.title = label;
@@ -382,7 +382,7 @@ string QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
         wxImage image = bitmap.ConvertToImage();
 
         if (!image.LoadFile(name, wxBITMAP_TYPE_ANY, -1)) {
-            qDebug() << "Couldn't load image." << endl;
+            qDebug() << "Couldn't load image.";
             } else {
             image.Rescale(resize_x, resize_y);
                 retrieved_image = wxBitmap(image);
@@ -402,7 +402,7 @@ string QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
  * @return
  */
 string QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bool deleteImages) {
-    qDebug() << "Capturing Image..." << endl;
+    qDebug() << "Capturing Image...";
     CameraFile *cameraFile;
     CameraFilePath path;
     QTLError result;
@@ -411,14 +411,15 @@ string QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bo
                                   params->context);
 
     if (result.rc != GP_OK) {
-        qDebug() << "Could not capture image:\t" << result.rc << endl;
-        qDebug() << "Ccamera_folders[f].c_str()heck the camera and re-initialise." << endl;
+        qDebug() << "Could not capture image:\t" << result.rc;
+        qDebug() << "check the camera and re-initialise.";
         qDebug() << "Could not capture an image. "
              << "Please check the camera and re-initialise.";
         gp_camera_exit(params->camera, params->context);
+        return string("");
     } else {
         qDebug() << "New file is in location " << path.folder << "/" << path.name
-             << " on the camera." << endl;
+             << " on the camera.";
     }
 
     if (retrieveImages) {
@@ -432,25 +433,25 @@ string QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bo
                                        cameraFile, params->context);
 
         if (result.rc != GP_OK) {
-            qDebug() << "Could not retieve image:\t" << result.rc << endl;
+            qDebug() << "Could not retieve image:\t" << result.rc;
         } else {
             result.rc = gp_file_save(cameraFile, localPath.c_str());
 
             if (result.rc != GP_OK) {
                 qDebug() << "Couldn't write file " << localPath.c_str()
-                     << " - check path/permissions/disk space." << endl;
+                     << " - check path/permissions/disk space.";
 
             } else {
-                qDebug() << "Written file " << localPath.c_str() << endl;
+                qDebug() << "Written file " << localPath.c_str();
             }
 
             // Delete image from camera if checkbox is ticked
             if (deleteImages) {
                 _deleteImage(&path, cameraFile);
             }
-            qDebug() << endl;
+            qDebug();
         }
-        qDebug() << "Created local file " << localPath.c_str() << endl;
+        qDebug() << "Created local file " << localPath.c_str();
         return localPath;
     }
     return string();
@@ -465,10 +466,10 @@ QTLError QTLCamera::_deleteImage(CameraFilePath *cameraFilePath, CameraFile *cam
                                       cameraFilePath->name, params->context);
     if (result.rc != GP_OK) {
         result.errorText = gp_result_as_string(result.rc);
-        qDebug() << "Problem deleting file from camera." << result.errorText << endl;
+        qDebug() << "Problem deleting file from camera." << result.errorText;
     } else {
         qDebug() << "File " << cameraFilePath->folder << cameraFilePath->name
-             << " deleted from camera." << endl;
+             << " deleted from camera.";
         gp_file_unref(cameraFile);
     }
     return result;
@@ -478,19 +479,19 @@ QTLError QTLCamera::_deleteImage(CameraFilePath *cameraFilePath, CameraFile *cam
  * @brief CameraHandler::_updateParams
  */
 void QTLCamera::_updateParams() {/*
-    qDebug() << "Setting camera paramaters:" << endl;
+    qDebug() << "Setting camera paramaters:";
     for (unsigned int v = 0; v < choice_label_vector.size(); v++) {
-        qDebug() << "Paramater:\t" << choice_label_vector[v].mb_str() << endl;
-        qDebug() << "Value:\t\t" << combobox_vector[v]->GetValue().mb_str() << endl;
+        qDebug() << "Paramater:\t" << choice_label_vector[v].mb_str();
+        qDebug() << "Value:\t\t" << combobox_vector[v]->GetValue().mb_str();
 
         int set = set_config_action(&params, choice_label_vector[v].mb_str(),
                                     combobox_vector[v]->GetValue().mb_str());
         if (set == GP_OK) {
             //qDebug() << "OK" <<  endl;
         } else {
-            qDebug() << "Error setting paramater:\t" << set << endl;
+            qDebug() << "Error setting paramater:\t" << set;
         }
     }
     paramsChanged = false;
-    qDebug() << endl;
+    qDebug();
 */}

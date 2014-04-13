@@ -25,10 +25,12 @@ struct _TimeLapseParams {
 
 class TimeLapseWorker : public QObject {
     Q_OBJECT
-    QThread workerThread;
+
+    bool halt = false;
 
 public slots:
     void captureImages(QTLCamera *, unsigned long, int, bool, bool);
+    void haltCapture();
 
 signals:
     void resultReady(const QString &);
@@ -63,13 +65,13 @@ public:
 
 public slots:
     void handleCapture(const QString &);
-    void stopCapture();
 
 signals:
     void startCapture(QTLCamera *, unsigned long, int, bool, bool);
 
 private:
     TimeLapseParams params;
+    TimeLapseWorker *worker;
 };
 
 #endif // TIMELAPSE_H

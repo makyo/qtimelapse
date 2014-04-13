@@ -66,7 +66,7 @@ private:
     QTLError _deleteImage(CameraFilePath *, CameraFile *);
     void _getWidgets(vector<QTLWidget> *, CameraWidget *, char *);
 
-    char *workingDirectory;
+    char workingDirectory[FILENAME_MAX];
     GPhotoParams *params;
     bool paramsChanged;
 };
