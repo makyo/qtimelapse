@@ -75,18 +75,44 @@ TimeLapseParams *TimeLapse::getParams() {
 
 /**
  * @brief TimeLapse::start
- * @return
  */
-int TimeLapse::start() {
-    return -1; // Not implemented
+void TimeLapse::start() {
+    // Build a threaded worker.
+    TimeLapseWorker *worker = new TimeLapseWorker;
+    worker->moveToThread(&workerThread);
+
+    // Connect signals from worker to thread and self.
+    connect(&workerThread, &QThread::finished, worker, &QObject::deleteLater);
+    connect(worker, &QObject::destroyed, this, &TimeLapse::stopCapture);
+    connect(this, &TimeLapse::startCapture, worker, &TimeLapseWorker::captureImages);
+    connect(worker, &TimeLapseWorker::resultReady, this, &TimeLapse::handleCapture);
+    workerThread.start();
+
+    // Begin the capture process.
+    unsigned long timeBetweenFrames =
+            (params.interval * 1000) / params.framesPerInterval;
+    startCapture(camera, timeBetweenFrames, params.maxFrames, params.retrieveImages,
+            params.deleteImages);
+
+    // Cancel the capture process after the max runtime.
+    if (params.maxRuntime > 0) {
+        QTimer::singleShot(params.maxRuntime * 60, this, SLOT(stopCapture()));
+    }
 }
 
 /**
  * @brief TimeLapse::stop
- * @return
  */
-int TimeLapse::stop() {
-    return -1; // Not implemented
+void TimeLapse::stop() {
+    workerThread.quit();
+    workerThread.wait();
+}
+
+/**
+ * @brief stopCapture
+ */
+void TimeLapse::stopCapture() {
+    stop();
 }
 
 /**
@@ -95,4 +121,28 @@ int TimeLapse::stop() {
  */
 string TimeLapse::preview() {
     return camera->captureImage(true, true);
+}
+
+/**
+ * @brief handleCapture
+ * @param result
+ */
+void TimeLapse::handleCapture(const QString &result) {
+    qDebug() << "Handling image:" << result;
+    return;
+}
+
+/**
+ * @brief TimeLapseWorker::captureImages
+ */
+void TimeLapseWorker::captureImages(QTLCamera *camera, unsigned long timeBetweenFrames,
+                                    int maxFrames, bool retrieveImages,
+                                    bool deleteImages) {
+    for (int i = 0; i < maxFrames; i++) {
+        qDebug() << "Capturing image " << i << "..." << endl;
+        emit resultReady(QString::fromStdString(
+                             camera->captureImage(retrieveImages, deleteImages)));
+        qDebug() << "Sleeping " << timeBetweenFrames << " milliseconds..." << endl;
+        workerThread.msleep(timeBetweenFrames);
+    }
 }

@@ -1,6 +1,12 @@
 #ifndef TIMELAPSE_H
 #define TIMELAPSE_H
 
+#include <QDebug>
+#include <QObject>
+#include <QString>
+#include <QThread>
+#include <QTimer>
+
 #include "camera.h"
 
 /**
@@ -17,10 +23,24 @@ struct _TimeLapseParams {
     bool deleteImages;
 };
 
+class TimeLapseWorker : public QObject {
+    Q_OBJECT
+    QThread workerThread;
+
+public slots:
+    void captureImages(QTLCamera *, unsigned long, int, bool, bool);
+
+signals:
+    void resultReady(const QString &);
+};
+
 /**
  * @brief The TimeLapse class
  */
-class TimeLapse {
+class TimeLapse : public QObject {
+    Q_OBJECT
+    QThread workerThread;
+
 public:
     TimeLapse();
     void setParams(TimeLapseParams *);
@@ -35,11 +55,18 @@ public:
     int initCamera();
     int detectCamera();
 
-    int start();
-    int stop();
+    void start();
+    void stop();
     string preview();
 
     QTLCamera *camera;
+
+public slots:
+    void handleCapture(const QString &);
+    void stopCapture();
+
+signals:
+    void startCapture(QTLCamera *, unsigned long, int, bool, bool);
 
 private:
     TimeLapseParams params;

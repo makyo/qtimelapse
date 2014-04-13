@@ -132,23 +132,19 @@ void QTimeLapse::on_btn_captureImage_clicked() {
  * @brief QTimeLapse::on_btn_start_clicked
  */
 void QTimeLapse::on_btn_start_clicked() {
-    //TODO try to start capturing
-    if (true) {
-        ui->btn_start->setEnabled(false);
-        ui->btn_captureImage->setEnabled(false);
-        ui->btn_chooseLocation->setEnabled(false);
-        setFieldsEnabled(false);
-        ui->btn_stop->setEnabled(true);
-    } else {
-        //TODO else warn
-    }
+    timeLapse->start();
+    ui->btn_start->setEnabled(false);
+    ui->btn_captureImage->setEnabled(false);
+    ui->btn_chooseLocation->setEnabled(false);
+    setFieldsEnabled(false);
+    ui->btn_stop->setEnabled(true);
 }
 
 /**
  * @brief QTimeLapse::on_btn_stop_clicked
  */
 void QTimeLapse::on_btn_stop_clicked() {
-    //TODO stop capturing
+    timeLapse->stop();
     ui->btn_start->setEnabled(true);
     ui->btn_captureImage->setEnabled(true);
     ui->btn_chooseLocation->setEnabled(true);
