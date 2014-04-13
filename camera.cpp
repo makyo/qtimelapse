@@ -378,7 +378,7 @@ void QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
     }
 
     // Now take picture
-    _captureImage(retrieveImages);
+    _captureImage(workingDirectory, retrieveImages, deleteImages);
 
     // Display the last image in the GUI
     /*
@@ -404,106 +404,77 @@ void QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
 /**
  * @brief CameraHandler::_captureImage
  */
-void QTLCamera::_captureImage(bool retrieveImage) {/*
+void QTLCamera::_captureImage(string workingDirectory, bool retrieveImages, bool deleteImages) {
     cout << "Capturing Image..." << endl;
-    CameraFile * camera_file;
+    CameraFile *cameraFile;
     CameraFilePath path;
-    vector<string> camera_files;
-    vector<string> camera_folders;
+    QTLError result;
 
-    int result = 0;
-    long frames_per_int;
-    if (!frames_per_interval->GetValue().ToLong(&frames_per_int)) {
-        cout << "Error getting frames/interval" << endl;
+    result.rc = gp_camera_capture(params->camera, GP_CAPTURE_IMAGE, &path,
+                                  params->context);
+
+    if (result.rc != GP_OK) {
+        cout << "Could not capture image:\t" << result.rc << endl;
+        cout << "Ccamera_folders[f].c_str()heck the camera and re-initialise." << endl;
+        cout << "Could not capture an image. "
+             << "Please check the camera and re-initialise.";
+        gp_camera_exit(params->camera, params->context);
+    } else {
+        cout << "New file is in location " << path.folder << "/" << path.name
+             << " on the camera." << endl;
     }
 
-    for (int f = 0; f < frames_per_int; f++) {
+    if (retrieveImages) {
+        //TODO
+        //string localPath = string(working_direcrory->GetPath().mb_str());
+        string localPath = string("");
+        localPath += "/";
+        localPath += path.name;
+        gp_file_new(&cameraFile);
 
-        result = gp_camera_capture(params.camera, GP_CAPTURE_IMAGE, &path, params.context);
+        result.rc = gp_camera_file_get(params->camera, path.folder,
+                                       path.name, GP_FILE_TYPE_NORMAL,
+                                       cameraFile, params->context);
 
-        if (result != GP_OK) {
-            cout << "Could not capture image:\t" << result << endl;
-            cout << "Check the camera and re-initialise." << endl;
-            cout << "Could not capture an image. Please check the camera and re-initialise.";
-            start_capture = false;
-            gp_camera_exit(params.camera, params.context);
+        if (result.rc != GP_OK) {
+            cout << "Could not retieve image:\t" << result.rc << endl;
         } else {
-            total_frames++;
-            cout << "New file is in location " << path.folder << "/" << path.name << " on the camera." << endl;
-            camera_files.push_back(path.name);
-            camera_folders.push_back(path.folder);
-        }
-    }
+            result.rc = gp_file_save(cameraFile, localPath.c_str());
 
-    if (camera_files.size()) {
+            if (result.rc != GP_OK) {
+                cout << "Couldn't write file " << localPath
+                     << " - check path/permissions/disk space." << endl;
 
-        for (unsigned int f = 0; f < camera_files.size(); f++) {
-
-            string local_path = string(working_direcrory->GetPath().mb_str());
-            local_path += "/";
-            local_path += camera_files[f];
-            gp_file_new(&camera_file);
-
-            // Retrieve image if checkbox is ticked
-            if (retrieveImages) {
-
-                result = gp_camera_file_get(params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), GP_FILE_TYPE_NORMAL, camera_file, params.context);
-
-                if (result != GP_OK) {
-                    cout << "Could not retieve image:\t" << result << endl;
-                } else {
-                    //result = gp_file_save(camera_file, path.name);
-                    result = gp_file_save(camera_file, local_path.c_str());
-
-                    if (result != GP_OK) {
-                        cout << "Couldn't write file " << local_path << " - check path/permissions/disk space." << endl;
-                        wxString status = (wxString::FromAscii("Couldn't write file "));
-                        status.Append(wxString::FromAscii(local_path.c_str()));
-                        status.Append(wxString::FromAscii(" - check path/permissions/disk space."));
-                        this->SetStatusText(status);
-
-                    } else {
-                        if (start_capture) {
-                            cout << "Written file " << total_frames << ": " << local_path << endl;
-                            wxString status = (wxString::FromAscii("Written file "));
-                            status.Append(wxString::Format(_T("%d"), total_frames));
-                            status.Append(wxString::FromAscii(": "));
-                            status.Append(wxString::FromAscii(local_path.c_str()));
-                            this->SetStatusText(status);
-                        } else {
-                            cout << "Written file " << local_path << endl;
-                            wxString status = (wxString::FromAscii("Written file "));
-                            status.Append(wxString::FromAscii(local_path.c_str()));
-                            this->SetStatusText(status);
-                        }
-                    }
-
-                    // Delete image from camera if checkbox is ticked
-                    if (deleteImages) {
-                        _deleteImage();
-                    }
-                    cout << endl;
-                }
+            } else {
+                cout << "Written file " << localPath << endl;
             }
+
+            // Delete image from camera if checkbox is ticked
+            if (deleteImages) {
+                _deleteImage(&path, cameraFile);
+            }
+            cout << endl;
         }
     }
-*/}
+}
 
 /**
  * @brief CameraHandler::_deleteImage
  */
-QTLError QTLCamera::_deleteImage() {/*
-    Error result;
-    result.rc = gp_camera_file_delete(params.camera, camera_folders[f].c_str(), camera_files[f].c_str(), params.context);
+QTLError QTLCamera::_deleteImage(CameraFilePath *cameraFilePath, CameraFile *cameraFile) {
+    QTLError result;
+    result.rc = gp_camera_file_delete(params->camera, cameraFilePath->folder,
+                                      cameraFilePath->name, params->context);
     if (result.rc != GP_OK) {
         result.errorText = gp_result_as_string(result.rc);
-        cout << "Problem deleting file from camera." << endl;
         cout << "Problem deleting file from camera." << result.errorText << endl;
     } else {
-        cout << "File " << camera_files[f] << " deleted from camera." << endl;
-        gp_file_unref(camera_file);
-    }}
-*/}
+        cout << "File " << cameraFilePath->folder << cameraFilePath->name
+             << " deleted from camera." << endl;
+        gp_file_unref(cameraFile);
+    }
+    return result;
+}
 
 /**
  * @brief CameraHandler::_updateParams

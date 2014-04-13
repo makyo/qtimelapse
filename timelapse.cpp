@@ -94,5 +94,5 @@ int TimeLapse::stop() {
  * @return
  */
 int TimeLapse::preview() {
-    return -1; // Not implemented
+    camera->captureImage(false, true);
 }

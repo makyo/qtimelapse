@@ -2,6 +2,7 @@
 #define CAMERAHANDLER_H
 
 #include <gphoto2/gphoto2.h>
+#include <string>
 #include <vector>
 
 using namespace std;
@@ -53,14 +54,14 @@ public:
     QTLError detectCamera();
     QTLError initCamera();
     int findWidgetByName(const char *, CameraWidget **, CameraWidget **);
-    int setConfigAction(const char *name, const char *value);
-    void captureImage(bool retrieveImages, bool deleteImages);
+    int setConfigAction(const char *, const char *);
+    void captureImage(bool, bool);
     vector<QTLWidget> *getWidgets();
 
 private:
     void _updateParams();
-    void _captureImage(bool retrieveImage);
-    QTLError _deleteImage();
+    void _captureImage(string, bool, bool);
+    QTLError _deleteImage(CameraFilePath *, CameraFile *);
     void _getWidgets(vector<QTLWidget> *, CameraWidget *, char *);
 
     char *workingDirectory;

@@ -107,9 +107,7 @@ void QTimeLapse::on_actionExit_triggered() {
  */
 void QTimeLapse::on_btn_captureImage_clicked() {
     //TODO try to capture a preview image
-    // Temporary solution: start, then stop.
-    on_btn_start_clicked();
-    on_btn_stop_clicked();
+    timeLapse->preview();
 }
 
 /**
