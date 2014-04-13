@@ -25,6 +25,46 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     cwd[sizeof(cwd) - 1] = '\0';
     timeLapse->camera->setWorkingDirectory(cwd);
     handleCameraDetect(timeLapse->camera->initCamera());
+
+    connect(timeLapse, &TimeLapse::passImageToApp, this,
+            &QTimeLapse::receiveImageFromCapture);
+
+    capturePreviewViews.push_back(ui->preview1);
+    capturePreviewViews.push_back(ui->preview2);
+    capturePreviewViews.push_back(ui->preview3);
+    capturePreviewViews.push_back(ui->preview4);
+    capturePreviewViews.push_back(ui->preview5);
+    capturePreviewViews.push_back(ui->preview6);
+    capturePreviewViews.push_back(ui->preview7);
+    capturePreviewViews.push_back(ui->preview8);
+    capturePreviewViews.push_back(ui->preview9);
+    capturePreviewViews.push_back(ui->preview10);
+    capturePreviewViews.push_back(ui->preview11);
+    capturePreviewViews.push_back(ui->preview12);
+    capturePreviewViews.push_back(ui->preview13);
+    capturePreviewViews.push_back(ui->preview14);
+    capturePreviewViews.push_back(ui->preview15);
+    capturePreviewViews.push_back(ui->preview16);
+    capturePreviewViews.push_back(ui->preview17);
+    capturePreviewViews.push_back(ui->preview18);
+    capturePreviewViews.push_back(ui->preview19);
+    capturePreviewViews.push_back(ui->preview20);
+    capturePreviewViews.push_back(ui->preview21);
+    capturePreviewViews.push_back(ui->preview22);
+    capturePreviewViews.push_back(ui->preview23);
+    capturePreviewViews.push_back(ui->preview24);
+    capturePreviewViews.push_back(ui->preview25);
+    capturePreviewViews.push_back(ui->preview26);
+    capturePreviewViews.push_back(ui->preview27);
+    capturePreviewViews.push_back(ui->preview28);
+    capturePreviewViews.push_back(ui->preview29);
+    capturePreviewViews.push_back(ui->preview30);
+    capturePreviewViews.push_back(ui->preview31);
+    capturePreviewViews.push_back(ui->preview32);
+    capturePreviewViews.push_back(ui->preview33);
+    capturePreviewViews.push_back(ui->preview34);
+    capturePreviewViews.push_back(ui->preview35);
+    capturePreviewViews.push_back(ui->preview36);
 }
 
 /**
@@ -138,6 +178,22 @@ void QTimeLapse::on_btn_start_clicked() {
     ui->btn_chooseLocation->setEnabled(false);
     setFieldsEnabled(false);
     ui->btn_stop->setEnabled(true);
+}
+
+void QTimeLapse::receiveImageFromCapture(const QString &path) {
+    capturePreviews.push_back(new QPixmap(path));
+    if (capturePreviews.size() > 36) {
+        capturePreviews.erase(capturePreviews.begin());
+    }
+    for (int i = 0; i < capturePreviews.size(); i++) {
+        if (capturePreviewViews.at(i)->scene()) {
+            delete capturePreviewViews.at(i)->scene();
+        }
+        QGraphicsScene *preview = new QGraphicsScene();
+        preview->addPixmap(capturePreviews.at(i)->scaled(
+                               capturePreviewViews.at(i)->size(), Qt::KeepAspectRatio));
+        capturePreviewViews.at(i)->setScene(preview);
+    }
 }
 
 /**

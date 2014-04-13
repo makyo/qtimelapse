@@ -68,6 +68,7 @@ public slots:
 
 signals:
     void startCapture(QTLCamera *, unsigned long, int, bool, bool);
+    void passImageToApp(const QString &);
 
 private:
     TimeLapseParams params;

@@ -141,7 +141,7 @@
              <set>Qt::ImhDigitsOnly</set>
             </property>
             <property name="inputMask">
-             <string>0000009</string>
+             <string>9000000</string>
             </property>
             <property name="text">
              <string>10</string>
@@ -169,7 +169,7 @@
              <set>Qt::ImhDigitsOnly</set>
             </property>
             <property name="inputMask">
-             <string>0000009</string>
+             <string>9000000</string>
             </property>
             <property name="text">
              <string>1</string>
@@ -235,7 +235,7 @@
              <set>Qt::ImhDigitsOnly</set>
             </property>
             <property name="inputMask">
-             <string>0000009</string>
+             <string>9000000</string>
             </property>
             <property name="text">
              <string>10</string>
@@ -267,7 +267,7 @@
              <set>Qt::ImhDigitsOnly</set>
             </property>
             <property name="inputMask">
-             <string>0000009</string>
+             <string>9000000</string>
             </property>
             <property name="text">
              <string>0</string>
@@ -284,7 +284,14 @@
          </layout>
         </item>
         <item>
-         <widget class="QGraphicsView" name="capturePreview"/>
+         <widget class="QGraphicsView" name="capturePreview">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>
@@ -335,112 +342,364 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="2" column="4">
-         <widget class="QGraphicsView" name="preview17"/>
+         <widget class="QGraphicsView" name="preview17">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="2" column="3">
-         <widget class="QGraphicsView" name="preview16"/>
+         <widget class="QGraphicsView" name="preview16">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="0" column="5">
-         <widget class="QGraphicsView" name="preview6"/>
+         <widget class="QGraphicsView" name="preview6">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QGraphicsView" name="preview7"/>
+         <widget class="QGraphicsView" name="preview7">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="0" column="3">
-         <widget class="QGraphicsView" name="preview4"/>
+         <widget class="QGraphicsView" name="preview4">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="1" column="3">
-         <widget class="QGraphicsView" name="preview10"/>
+         <widget class="QGraphicsView" name="preview10">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="5" column="3">
-         <widget class="QGraphicsView" name="preview34"/>
+         <widget class="QGraphicsView" name="preview34">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="5" column="5">
-         <widget class="QGraphicsView" name="preview36"/>
+         <widget class="QGraphicsView" name="preview36">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="5" column="4">
-         <widget class="QGraphicsView" name="preview35"/>
+         <widget class="QGraphicsView" name="preview35">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="4" column="0">
-         <widget class="QGraphicsView" name="preview25"/>
+         <widget class="QGraphicsView" name="preview25">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="2" column="0">
-         <widget class="QGraphicsView" name="preview13"/>
+         <widget class="QGraphicsView" name="preview13">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="1" column="5">
-         <widget class="QGraphicsView" name="preview12"/>
+         <widget class="QGraphicsView" name="preview12">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="5" column="0">
-         <widget class="QGraphicsView" name="preview31"/>
+         <widget class="QGraphicsView" name="preview31">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="0">
-         <widget class="QGraphicsView" name="preview19"/>
+         <widget class="QGraphicsView" name="preview19">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="0" column="4">
-         <widget class="QGraphicsView" name="preview5"/>
+         <widget class="QGraphicsView" name="preview5">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="2" column="5">
-         <widget class="QGraphicsView" name="preview18"/>
+         <widget class="QGraphicsView" name="preview18">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="1" column="4">
-         <widget class="QGraphicsView" name="preview11"/>
+         <widget class="QGraphicsView" name="preview11">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="4" column="2">
-         <widget class="QGraphicsView" name="preview27"/>
+         <widget class="QGraphicsView" name="preview27">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QGraphicsView" name="preview1"/>
+         <widget class="QGraphicsView" name="preview1">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="4" column="1">
-         <widget class="QGraphicsView" name="preview26"/>
+         <widget class="QGraphicsView" name="preview26">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QGraphicsView" name="preview2"/>
+         <widget class="QGraphicsView" name="preview2">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QGraphicsView" name="preview3"/>
+         <widget class="QGraphicsView" name="preview3">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QGraphicsView" name="preview8"/>
+         <widget class="QGraphicsView" name="preview8">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="1" column="2">
-         <widget class="QGraphicsView" name="preview9"/>
+         <widget class="QGraphicsView" name="preview9">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QGraphicsView" name="preview14"/>
+         <widget class="QGraphicsView" name="preview14">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="2" column="2">
-         <widget class="QGraphicsView" name="preview15"/>
+         <widget class="QGraphicsView" name="preview15">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="1">
-         <widget class="QGraphicsView" name="preview20"/>
+         <widget class="QGraphicsView" name="preview20">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="2">
-         <widget class="QGraphicsView" name="preview21"/>
+         <widget class="QGraphicsView" name="preview21">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="5" column="1">
-         <widget class="QGraphicsView" name="preview32"/>
+         <widget class="QGraphicsView" name="preview32">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="5" column="2">
-         <widget class="QGraphicsView" name="preview33"/>
+         <widget class="QGraphicsView" name="preview33">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="3">
-         <widget class="QGraphicsView" name="preview22"/>
+         <widget class="QGraphicsView" name="preview22">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="4" column="3">
-         <widget class="QGraphicsView" name="preview28"/>
+         <widget class="QGraphicsView" name="preview28">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="4">
-         <widget class="QGraphicsView" name="preview23"/>
+         <widget class="QGraphicsView" name="preview23">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="4" column="4">
-         <widget class="QGraphicsView" name="preview29"/>
+         <widget class="QGraphicsView" name="preview29">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="5">
-         <widget class="QGraphicsView" name="preview24"/>
+         <widget class="QGraphicsView" name="preview24">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
         <item row="4" column="5">
-         <widget class="QGraphicsView" name="preview30"/>
+         <widget class="QGraphicsView" name="preview30">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOff</enum>
+          </property>
+         </widget>
         </item>
        </layout>
       </widget>

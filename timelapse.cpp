@@ -123,7 +123,7 @@ string TimeLapse::preview() {
  */
 void TimeLapse::handleCapture(const QString &result) {
     qDebug() << "Handling image:" << result;
-    return;
+    passImageToApp(result);
 }
 
 /**

@@ -20,6 +20,7 @@
     #include <unistd.h>
     #define GetCurrentDir getcwd
 #endif
+#include <vector>
 
 #include "camera.h"
 #include "timelapse.h"
@@ -36,6 +37,9 @@ public:
     ~QTimeLapse();
 
     void handleCameraDetect(QTLError);
+
+public slots:
+    void receiveImageFromCapture(const QString &);
 
 private slots:
     void displayCameraSettings();
@@ -62,6 +66,8 @@ private:
     QFileDialog *fileDialog_workingDirectory;
     TimeLapse *timeLapse;
     QGraphicsScene *previewScene;
+    vector<QPixmap *> capturePreviews;
+    vector<QGraphicsView *> capturePreviewViews;
 };
 
 #endif // QTIMELAPSE_H
