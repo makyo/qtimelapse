@@ -61,7 +61,7 @@ QTLError QTLCamera::initCamera() {
         }
     } else {
         qDebug() << "Camera detected";
-        qDebug() << "Detecting widgets"<< endl;
+        qDebug() << "Detecting widgets" << endl;
         CameraWidget *rootConfig;
         result.rc = gp_camera_get_config(params->camera, &rootConfig, params->context);
         if (result.rc == GP_OK) {
@@ -224,7 +224,7 @@ int QTLCamera::findWidgetByName(const char *name, CameraWidget **child,
         }
         if (s) {
             // If we have stuff left over, we failed.
-            //gp_context_error (p->context, _("%s not found in configuration tree."), newname);
+            qDebug() << newname << "not found in configuration tree.";
             free(newname);
             gp_widget_free(*rootConfig);
             return GP_ERROR;
@@ -269,7 +269,7 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
     case GP_WIDGET_TEXT: {      /* char *       */
         rc = gp_widget_set_value(child, value);
         if (rc != GP_OK) {
-            qDebug() << "Failed to set the value of text widget " << name << " " << value;
+            qDebug() << "Failed to set the value of text widget" << name << value;
         }
         break;
     }
@@ -280,18 +280,20 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
         if (rc != GP_OK)
             break;
         if (!sscanf(value, "%f", &floatValue)) {
-            qDebug() << "The passed value " << value << " is not a floating point value.";
+            qDebug() << "The passed value" << value << "is not a floating point value.";
             rc = GP_ERROR_BAD_PARAMETERS;
             break;
         }
         if ((floatValue < bottom) || (floatValue > top)) {
-            qDebug () << "The passed value " << floatValue << " is not within the expected range " << bottom << " - " << top << ".";
+            qDebug () << "The passed value" << floatValue << "is not within the expected range"
+                      << bottom << "-" << top << ".";
             rc = GP_ERROR_BAD_PARAMETERS;
             break;
         }
         rc = gp_widget_set_value(child, &floatValue);
         if (rc != GP_OK) {
-            qDebug() << "Failed to set the value of range widget " << name << " to " << floatValue << ".";
+            qDebug() << "Failed to set the value of range widget" << name << "to"
+                     << floatValue << ".";
         }
         break;
     }
@@ -299,14 +301,16 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
         int t = -1;
         if (t == -1) {
             if (!sscanf(value, "%d", &t)) {
-                qDebug() << "The passed value " << value << " is neither a valid time nor an integer.";
+                qDebug() << "The passed value" << value
+                         << "is neither a valid time nor an integer.";
                 rc = GP_ERROR_BAD_PARAMETERS;
                 break;
             }
         }
         rc = gp_widget_set_value(child, &t);
         if (rc != GP_OK) {
-            qDebug() << "Failed to set new time of date/time widget " << name << " to " << value << ".";
+            qDebug() << "Failed to set new time of date/time widget " << name
+                     << " to " << value << ".";
         }
         break;
     }
@@ -380,26 +384,6 @@ string QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
 
     // Now take picture
     return _captureImage(workingDirectory, retrieveImages, deleteImages);
-
-    // Display the last image in the GUI
-    /*
-    if (result == GP_OK && tb1->IsChecked()) {
-
-        wxString name(path.name, wxConvUTF8);
-        wxBitmap bitmap;
-        wxImage image = bitmap.ConvertToImage();
-
-        if (!image.LoadFile(name, wxBITMAP_TYPE_ANY, -1)) {
-            qDebug() << "Couldn't load image.";
-            } else {
-            image.Rescale(resize_x, resize_y);
-                retrieved_image = wxBitmap(image);
-            small_images.push_back(wxBitmap(image.Rescale(90,60)));
-            if(small_images.size() > 48) {
-                small_images.erase(small_images.begin());
-            }
-        }
-    }*/
 }
 
 /**
@@ -476,30 +460,9 @@ QTLError QTLCamera::_deleteImage(CameraFilePath *cameraFilePath, CameraFile *cam
         result.errorText = gp_result_as_string(result.rc);
         qDebug() << "Problem deleting file from camera." << result.errorText;
     } else {
-        qDebug() << "File " << cameraFilePath->folder << cameraFilePath->name
-             << " deleted from camera.";
+        qDebug() << "File" << cameraFilePath->folder << cameraFilePath->name
+             << "deleted from camera.";
         gp_file_unref(cameraFile);
     }
     return result;
 }
-
-/**
- * @brief CameraHandler::_updateParams
- */
-void QTLCamera::_updateParams() {/*
-    qDebug() << "Setting camera paramaters:";
-    for (unsigned int v = 0; v < choice_label_vector.size(); v++) {
-        qDebug() << "Paramater:\t" << choice_label_vector[v].mb_str();
-        qDebug() << "Value:\t\t" << combobox_vector[v]->GetValue().mb_str();
-
-        int set = set_config_action(&params, choice_label_vector[v].mb_str(),
-                                    combobox_vector[v]->GetValue().mb_str());
-        if (set == GP_OK) {
-            //qDebug() << "OK" <<  endl;
-        } else {
-            qDebug() << "Error setting paramater:\t" << set;
-        }
-    }
-    paramsChanged = false;
-    qDebug();
-*/}
