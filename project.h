@@ -1,7 +1,7 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
-#include <iostream>
+#include <fstream>
 #include <vector>
 #include <yaml-cpp/yaml.h>
 
@@ -13,8 +13,8 @@ public:
     QTLProject();
     QTLProject(const string *);
 
-    void setFilename(const string *);
-    void save(char *, TimeLapse *, QTLCamera *);
+    void setFilename(string *);
+    void save(TimeLapse *, QTLCamera *);
 
 private:
     string *filename;

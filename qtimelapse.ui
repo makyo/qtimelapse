@@ -735,11 +735,6 @@
      <height>25</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menuQTimeLapse">
-    <property name="title">
-     <string>QTimeLapse</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
@@ -757,7 +752,6 @@
     </property>
     <addaction name="actionDetect_Camera"/>
    </widget>
-   <addaction name="menuQTimeLapse"/>
    <addaction name="menuFile"/>
    <addaction name="menuCamera"/>
   </widget>

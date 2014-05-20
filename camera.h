@@ -54,6 +54,7 @@ public:
     QTLCamera();
 
     void setWorkingDirectory(const char *);
+    char * getWorkingDirectory();
     QTLError detectCamera();
     QTLError initCamera();
     int findWidgetByName(const char *, CameraWidget **, CameraWidget **);

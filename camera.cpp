@@ -26,6 +26,10 @@ void QTLCamera::setWorkingDirectory(const char *wd) {
     strcpy(workingDirectory, wd);
 }
 
+char * QTLCamera::getWorkingDirectory() {
+    return workingDirectory;
+}
+
 /**
  * @brief QTLCamera::detectCamera
  * @return
@@ -389,12 +393,6 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
  * @brief CameraHandler::captureImage
  */
 string QTLCamera::captureImage(bool retrieveImages, bool deleteImages) {
-    // Set camera paramaters if changed
-    if (paramsChanged) {
-        _updateParams();
-    }
-
-    // Now take picture
     return _captureImage(workingDirectory, retrieveImages, deleteImages);
 }
 
