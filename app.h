@@ -62,6 +62,16 @@ private slots:
     void on_chk_retrieveImages_toggled(bool checked);
     void on_chk_deleteImages_toggled(bool checked);
 
+    void on_actionNew_triggered();
+
+    void on_actionOpen_triggered();
+
+    void on_actionSave_triggered();
+
+    void on_actionSave_as_triggered();
+
+    void on_actionClose_project_triggered();
+
 private:
     Ui::QTimeLapse *ui;
     QFileDialog *fileDialog_workingDirectory;

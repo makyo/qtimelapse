@@ -150,13 +150,43 @@ void QTimeLapse::setCameraSetting(int item) {
  *
  * Menu actions
  *
+ *     File menu
+ *
  ***************************************************************************************/
 
 /**
- * @brief QTimeLapse::on_actionDetect_Camera_triggered
+ * @brief QTimeLapse::on_actionNew_triggered
  */
-void QTimeLapse::on_actionDetect_Camera_triggered() {
-    handleCameraDetect(timeLapse->camera->detectCamera());
+void QTimeLapse::on_actionNew_triggered() {
+
+}
+
+/**
+ * @brief QTimeLapse::on_actionOpen_triggered
+ */
+void QTimeLapse::on_actionOpen_triggered() {
+
+}
+
+/**
+ * @brief QTimeLapse::on_actionSave_triggered
+ */
+void QTimeLapse::on_actionSave_triggered() {
+
+}
+
+/**
+ * @brief QTimeLapse::on_actionSave_as_triggered
+ */
+void QTimeLapse::on_actionSave_as_triggered() {
+
+}
+
+/**
+ * @brief QTimeLapse::on_actionClose_project_triggered
+ */
+void QTimeLapse::on_actionClose_project_triggered() {
+
 }
 
 /**
@@ -164,6 +194,21 @@ void QTimeLapse::on_actionDetect_Camera_triggered() {
  */
 void QTimeLapse::on_actionExit_triggered() {
     destroy();
+}
+
+/****************************************************************************************
+ *
+ * Menu actions
+ *
+ *     Camera menu
+ *
+ ***************************************************************************************/
+
+/**
+ * @brief QTimeLapse::on_actionDetect_Camera_triggered
+ */
+void QTimeLapse::on_actionDetect_Camera_triggered() {
+    handleCameraDetect(timeLapse->camera->detectCamera());
 }
 
 /****************************************************************************************

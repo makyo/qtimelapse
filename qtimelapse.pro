@@ -15,15 +15,19 @@ TEMPLATE = app
 SOURCES += main.cpp\
     timelapse.cpp \
     camera.cpp \
-    app.cpp
+    app.cpp \
+    project.cpp
 
 HEADERS  += \
     timelapse.h \
     camera.h \
-    app.h
+    app.h \
+    project.h
 
 FORMS    += qtimelapse.ui
 
 unix|win32: LIBS += -lgphoto2
 
 unix|win32: LIBS += -lgphoto2_port
+
+unix|win32: LIBS += -lyaml-cpp
