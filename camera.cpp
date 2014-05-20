@@ -18,10 +18,18 @@ QTLCamera::QTLCamera() {
     params->widgetList = new vector<QTLWidget>();
 }
 
+/**
+ * @brief QTLCamera::setWorkingDirectory
+ * @param wd
+ */
 void QTLCamera::setWorkingDirectory(const char *wd) {
     strcpy(workingDirectory, wd);
 }
 
+/**
+ * @brief QTLCamera::detectCamera
+ * @return
+ */
 QTLError QTLCamera::detectCamera() {
     // Close connection to camera
     gp_camera_exit(params->camera, params->context);
@@ -31,6 +39,10 @@ QTLError QTLCamera::detectCamera() {
     return initCamera();
 }
 
+/**
+ * @brief QTLCamera::initCamera
+ * @return
+ */
 QTLError QTLCamera::initCamera() {
     QTLError result;
     result.rc = GP_OK;

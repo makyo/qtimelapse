@@ -1,6 +1,10 @@
 #include "app.h"
 #include "ui_qtimelapse.h"
 
+/**
+ * @brief QTimeLapse::QTimeLapse
+ * @param parent
+ */
 QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeLapse) {
     ui->setupUi(this);
 
