@@ -25,6 +25,7 @@ typedef struct _QTLWidget QTLWidget;
 struct _QTLWidget {
     CameraWidget *widget;
     const char *title;
+    const char *name;
     const char *defaultChoice;
     const char *choiceLabel;
     vector<const char *> choices;

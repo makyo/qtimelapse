@@ -144,6 +144,7 @@ void QTLCamera::_getWidgets(vector<QTLWidget> *widgetList, CameraWidget *widget,
                     }
 
                     qtlWidget.title = label;
+                    qtlWidget.name = name;
                     qtlWidget.defaultChoice = current;
                     qtlWidget.choiceLabel = uselabel;
 
@@ -267,43 +268,46 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
     }
     case GP_WIDGET_TEXT: {      /* char *       */
         rc = gp_widget_set_value(child, value);
-        if (rc != GP_OK)
-            //gp_context_error(p->context, _("Failed to set the value of text widget %s to %s."), name, value);
+        if (rc != GP_OK) {
+            qDebug() << "Failed to set the value of text widget " << name << " " << value;
+        }
         break;
     }
     case GP_WIDGET_RANGE: { /* float        */
-        float f, t, b, s;
+        float floatValue, top, bottom, s;
 
-        rc = gp_widget_get_range(child, &b, &t, &s);
+        rc = gp_widget_get_range(child, &bottom, &top, &s);
         if (rc != GP_OK)
             break;
-        if (!sscanf(value, "%f", &f)) {
-            //gp_context_error(p->context, _("The passed value %s is not a floating point value."), value);
+        if (!sscanf(value, "%f", &floatValue)) {
+            qDebug() << "The passed value " << value << " is not a floating point value.";
             rc = GP_ERROR_BAD_PARAMETERS;
             break;
         }
-        if ((f < b) || (f > t)) {
-            //gp_context_error(p->context, _("The passed value %f is not within the expected range %f - %f."), f, b, t);
+        if ((floatValue < bottom) || (floatValue > top)) {
+            qDebug () << "The passed value " << floatValue << " is not within the expected range " << bottom << " - " << top << ".";
             rc = GP_ERROR_BAD_PARAMETERS;
             break;
         }
-        rc = gp_widget_set_value(child, &f);
-        if (rc != GP_OK)
-            //gp_context_error(p->context, _("Failed to set the value of range widget %s to %f."), name, f);
+        rc = gp_widget_set_value(child, &floatValue);
+        if (rc != GP_OK) {
+            qDebug() << "Failed to set the value of range widget " << name << " to " << floatValue << ".";
+        }
         break;
     }
     case GP_WIDGET_DATE:  {     /* int          */
         int t = -1;
         if (t == -1) {
             if (!sscanf(value, "%d", &t)) {
-                //gp_context_error(p->context, _("The passed value %s is neither a valid time nor an integer."), value);
+                qDebug() << "The passed value " << value << " is neither a valid time nor an integer.";
                 rc = GP_ERROR_BAD_PARAMETERS;
                 break;
             }
         }
         rc = gp_widget_set_value(child, &t);
-        if (rc != GP_OK)
-            //gp_context_error(p->context, _("Failed to set new time of date/time widget %s to %s."), name, value);
+        if (rc != GP_OK) {
+            qDebug() << "Failed to set new time of date/time widget " << name << " to " << value << ".";
+        }
         break;
     }
     case GP_WIDGET_MENU:
@@ -320,27 +324,30 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
             const char *choice;
 
             rc = gp_widget_get_choice(child, i, &choice);
-            if (rc != GP_OK)
+            if (rc != GP_OK) {
                 continue;
+            }
             if (!strcmp(choice, value)) {
                 rc = gp_widget_set_value(child, value);
                 break;
             }
         }
-        if (i != cnt)
+        if (i != cnt) {
             break;
+        }
 
         if (sscanf(value, "%d", &i)) {
             if ((i >= 0) && (i < cnt)) {
                 const char *choice;
 
                 rc = gp_widget_get_choice(child, i, &choice);
-                if (rc == GP_OK)
+                if (rc == GP_OK) {
                     rc = gp_widget_set_value(child, choice);
+                }
                 break;
             }
         }
-        //gp_context_error(p->context, _("Choice %s not found within list of choices."), value);
+        qDebug() << "Choice " << value << " not found within list of choices.";
         break;
     }
 
@@ -354,8 +361,9 @@ int QTLCamera::setConfigAction(const char *name, const char *value) {
     }
     if (rc == GP_OK) {
         rc = gp_camera_set_config(params->camera, rootConfig, params->context);
-        //if (ret != GP_OK)
-            //gp_context_error(p->context, _("Failed to set new configuration value %s for configuration entry %s."), value, name);
+        if (rc != GP_OK) {
+            qDebug() << "Failed to set new configuration value " << value << " for configuration entry " << name << ".";
+        }
     }
     gp_widget_free(rootConfig);
     return rc;

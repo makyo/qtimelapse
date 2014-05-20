@@ -111,10 +111,11 @@ void QTimeLapse::displayCameraSettings() {
         QTLWidget widget = widgets->at(i);
         QComboBox *comboBox = new QComboBox();
         for (unsigned int j = 0; j < widget.choices.size(); j++) {
-            comboBox->addItem(widget.choices.at(j));
+            comboBox->addItem(widget.choices.at(j), QVariant(widget.name));
         }
         QLabel *label = new QLabel(widget.title);
         settingsForm->addRow(label, comboBox);
+        connect(comboBox, SIGNAL(currentIndexChanged(int)), this, SLOT(setCameraSetting(int)));
     }
 
     // Delete existing layout along with all of its widgets.
@@ -127,6 +128,18 @@ void QTimeLapse::displayCameraSettings() {
         delete ui->grp_cameraSettings->layout();
     }
     ui->grp_cameraSettings->setLayout(settingsForm);
+}
+
+/**
+ * @brief QTimeLapse::setCameraSetting
+ * @param item
+ */
+void QTimeLapse::setCameraSetting(int item) {
+    QComboBox *setting = (QComboBox *)sender();
+    QString settingName = setting->itemData(item).toString();
+    QString settingValue = setting->itemText(item);
+    qDebug() << "Setting parameter" << settingName << "to" << settingValue;
+    timeLapse->camera->setConfigAction(settingName.toStdString().c_str(), settingValue.toStdString().c_str());
 }
 
 /****************************************************************************************

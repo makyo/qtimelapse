@@ -323,13 +323,32 @@
            </widget>
           </item>
           <item>
-           <widget class="QGroupBox" name="grp_cameraSettings">
-            <property name="title">
-             <string>Camera Settings</string>
-            </property>
-            <property name="flat">
+           <widget class="QScrollArea" name="settingsScrollArea">
+            <property name="widgetResizable">
              <bool>true</bool>
             </property>
+            <widget class="QWidget" name="scrollAreaWidgetContents">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>673</width>
+               <height>439</height>
+              </rect>
+             </property>
+             <layout class="QVBoxLayout" name="verticalLayout_3">
+              <item>
+               <widget class="QGroupBox" name="grp_cameraSettings">
+                <property name="title">
+                 <string>Camera Settings</string>
+                </property>
+                <property name="flat">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </widget>
           </item>
          </layout>

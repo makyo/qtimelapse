@@ -43,6 +43,7 @@ public slots:
 
 private slots:
     void displayCameraSettings();
+    void setCameraSetting(int);
 
     void on_actionExit_triggered();
     void on_actionDetect_Camera_triggered();
