@@ -1,27 +1,66 @@
 #include "project.h"
 
+using namespace libconfig;
+
 /**
  * @brief QTLProject::QTLProject
  */
 QTLProject::QTLProject() {
-    config = YAML::Load("{QTimeLapse: {workingDirectory: null, timeLapse: {}, camera: {widgets: []}}}");
+    filename = string("");
+    initialize();
 }
 
 /**
  * @brief QTLProject::QTLProject
  * @param filename
  */
-QTLProject::QTLProject(const string *newFilename) {
-    filename = filename;
-    config = YAML::LoadFile(*filename);
+QTLProject::QTLProject(string newFilename) {
+    filename = newFilename;
+    config.readFile(filename.c_str());
+    // TODO check for qtlVersion setting
+    initialize();
+}
+
+void QTLProject::initialize() {
+    Setting &root = config.getRoot();
+
+    if (!root.exists("qtlVersion")) {
+        root.add("qtlVersion", Setting::TypeString) = "0.0.1";
+    }
+    if (!root.exists("workingDirectory")) {
+        root.add("workingDirectory", Setting::TypeString) = "";
+    }
+
+    if (!root.exists("timelapse")) {
+        Setting &timelapse = root.add("timelapse", Setting::TypeGroup);
+        timelapse.add("interval", Setting::TypeInt) = 0;
+        timelapse.add("framesPerInterval", Setting::TypeInt) = 0;
+        timelapse.add("maxFrames", Setting::TypeInt) = 0;
+        timelapse.add("maxRuntime", Setting::TypeInt) = 0;
+        timelapse.add("retrieveImages", Setting::TypeBoolean) = true;
+        timelapse.add("deleteImages", Setting::TypeBoolean) = true;
+    }
+
+    if (!root.exists("camera")) {
+        Setting &camera = root.add("camera", Setting::TypeGroup);
+        camera.add("widgets", Setting::TypeList);
+    }
 }
 
 /**
- * @brief QTLProject::setFilename
- * @param newFilename
+ * @brief QTLProject::setfilename
+ * @param newfilename
  */
-void QTLProject::setFilename(string *newFilename) {
+void QTLProject::setFilename(string newFilename) {
     filename = newFilename;
+}
+
+/**
+ * @brief QTLProject::getfilename
+ * @return
+ */
+string * QTLProject::getFilename() {
+    return &filename;
 }
 
 /**
@@ -30,23 +69,36 @@ void QTLProject::setFilename(string *newFilename) {
  * @param timeLapse
  * @param camera
  */
-void QTLProject::save(TimeLapse *timeLapse, QTLCamera *camera) {
-    TimeLapseParams *tlParams = timeLapse->getParams();
-    config["QTimeLapse"]["timelapse"]["interval"] = tlParams->interval;
-    config["QTimeLapse"]["timelapse"]["framesPerInterval"] = tlParams->framesPerInterval;
-    config["QTimeLapse"]["timelapse"]["maxRuntime"] = tlParams->maxRuntime;
-    config["QTimeLapse"]["timelapse"]["maxFrames"] = tlParams->maxFrames;
-    config["QTimeLapse"]["timelapse"]["retrieveImages"] = tlParams->retrieveImages;
-    config["QTimeLapse"]["timelapse"]["deleteImages"] = tlParams->deleteImages;
+void QTLProject::save(TimeLapse *timeLapse) {
+    TimeLapseParams *params = timeLapse->getParams();
 
-    config["QTimeLapse"]["workingDirectory"] = camera->getWorkingDirectory();
+    config.lookup("workingDirectory") = timeLapse->camera->getWorkingDirectory();
 
-    vector<QTLWidget> *widgets = camera->getWidgets();
-    for (int i = 0; i < widgets->size(); i++) {
-        QTLWidget widget = widgets->at(i);
-        config["QTimeLapse"]["camera"]["widgets"][widget.name] = widget.title;
-    }
+    config.lookup("timelapse.interval") = params->interval;
+    config.lookup("timelapse.framesPerInterval") = params->framesPerInterval;
+    config.lookup("timelapse.maxFrames") = params->maxFrames;
+    config.lookup("timelapse.maxRuntime") = params->maxRuntime;
+    config.lookup("timelapse.retrieveImages") = params->retrieveImages;
+    config.lookup("timelapse.deleteImages") = params->deleteImages;
 
-    ofstream fout(filename->c_str());
-    fout << config;
+    // TODO - save camera widgets to camera group
+
+    config.writeFile(filename.c_str());
+}
+
+/**
+ * @brief QTLProject::load
+ * @param timeLapse
+ */
+void QTLProject::load(TimeLapse *timeLapse) {
+    TimeLapseParams *params = new TimeLapseParams();
+
+    config.lookupValue("timelapse.interval", params->interval);
+    config.lookupValue("timelapse.framesPerInterval", params->framesPerInterval);
+    config.lookupValue("timelapse.maxFrames", params->maxFrames);
+    config.lookupValue("timelapse.maxRuntime", params->maxRuntime);
+    config.lookupValue("timelapse.retrieveImages", params->retrieveImages);
+    config.lookupValue("timelapse.deleteImages", params->deleteImages);
+
+    // TODO - load camera widgets from camera group
 }

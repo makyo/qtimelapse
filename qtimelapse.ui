@@ -743,7 +743,6 @@
     <addaction name="actionOpen"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
-    <addaction name="actionClose_project"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuCamera">

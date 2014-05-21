@@ -24,6 +24,13 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     timeLapse->setParams(&p);
     timeLapse->camera = new QTLCamera();
 
+    // The current project YAML.
+    project = new QTLProject();
+
+    // Project file dialog.
+    fileDialog_project = new QFileDialog();
+    fileDialog_project->setDefaultSuffix(QString("qtl"));
+
     // Set the working directory to the current directory.
     char cwd[FILENAME_MAX];
     GetCurrentDir(cwd, sizeof(cwd));
@@ -158,35 +165,41 @@ void QTimeLapse::setCameraSetting(int item) {
  * @brief QTimeLapse::on_actionNew_triggered
  */
 void QTimeLapse::on_actionNew_triggered() {
-
+    project = new QTLProject();
 }
 
 /**
  * @brief QTimeLapse::on_actionOpen_triggered
  */
 void QTimeLapse::on_actionOpen_triggered() {
-
+    QString filename;
+    if (fileDialog_project->exec()) {
+        filename = fileDialog_project->selectedFiles().at(0);
+        project = new QTLProject(filename.toStdString());
+    }
 }
 
 /**
  * @brief QTimeLapse::on_actionSave_triggered
  */
 void QTimeLapse::on_actionSave_triggered() {
-
+    if (!project->getFilename()->empty()) {
+        project->save(timeLapse);
+    } else {
+        on_actionSave_as_triggered();
+    }
 }
 
 /**
  * @brief QTimeLapse::on_actionSave_as_triggered
  */
 void QTimeLapse::on_actionSave_as_triggered() {
-
-}
-
-/**
- * @brief QTimeLapse::on_actionClose_project_triggered
- */
-void QTimeLapse::on_actionClose_project_triggered() {
-
+    QString filename;
+    if (fileDialog_project->exec()) {
+        filename = fileDialog_project->selectedFiles().at(0);
+        project->setFilename(filename.toStdString());
+        project->save(timeLapse);
+    }
 }
 
 /**
@@ -292,12 +305,12 @@ void QTimeLapse::on_btn_stop_clicked() {
  * @brief QTimeLapse::on_btn_chooseLocation_clicked
  */
 void QTimeLapse::on_btn_chooseLocation_clicked() {
-    QString fileName;
-     if (fileDialog_workingDirectory->exec()) {
-         fileName = fileDialog_workingDirectory->selectedFiles().at(0);
-         timeLapse->camera->setWorkingDirectory(fileName.toStdString().c_str());
-         ui->statusBar->showMessage("Working directory set to: " + fileName);
-     }
+    QString filename;
+    if (fileDialog_workingDirectory->exec()) {
+        filename = fileDialog_workingDirectory->selectedFiles().at(0);
+        timeLapse->camera->setWorkingDirectory(filename.toStdString().c_str());
+        ui->statusBar->showMessage("Working directory set to: " + filename);
+    }
 }
 
 /****************************************************************************************

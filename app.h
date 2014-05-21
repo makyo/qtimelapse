@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "camera.h"
+#include "project.h"
 #include "timelapse.h"
 
 namespace Ui {
@@ -45,7 +46,12 @@ private slots:
     void displayCameraSettings();
     void setCameraSetting(int);
 
+    void on_actionNew_triggered();
+    void on_actionOpen_triggered();
+    void on_actionSave_triggered();
+    void on_actionSave_as_triggered();
     void on_actionExit_triggered();
+
     void on_actionDetect_Camera_triggered();
 
     void on_btn_captureImage_clicked();
@@ -62,20 +68,12 @@ private slots:
     void on_chk_retrieveImages_toggled(bool checked);
     void on_chk_deleteImages_toggled(bool checked);
 
-    void on_actionNew_triggered();
-
-    void on_actionOpen_triggered();
-
-    void on_actionSave_triggered();
-
-    void on_actionSave_as_triggered();
-
-    void on_actionClose_project_triggered();
 
 private:
     Ui::QTimeLapse *ui;
-    QFileDialog *fileDialog_workingDirectory;
+    QFileDialog *fileDialog_workingDirectory, *fileDialog_project;
     TimeLapse *timeLapse;
+    QTLProject *project;
     QGraphicsScene *previewScene;
     vector<QPixmap *> capturePreviews;
     vector<QGraphicsView *> capturePreviewViews;
