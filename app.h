@@ -41,6 +41,7 @@ public:
 
 public slots:
     void receiveImageFromCapture(const QString &);
+    void updateParamsFromTimeLapse();
 
 private slots:
     void displayCameraSettings();

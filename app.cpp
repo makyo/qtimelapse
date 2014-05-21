@@ -28,7 +28,10 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     project = new QTLProject();
 
     // Project file dialog.
-    fileDialog_project = new QFileDialog();
+    fileDialog_project = new QFileDialog(0,
+                                         tr("QTimeLapse Project..."),
+                                         QString(),
+                                         "QTimeLapse project files (*.qtl)");
     fileDialog_project->setDefaultSuffix(QString("qtl"));
 
     // Set the working directory to the current directory.
@@ -43,6 +46,8 @@ QTimeLapse::QTimeLapse(QWidget *parent) : QMainWindow(parent), ui(new Ui::QTimeL
     // Connections
     connect(timeLapse, &TimeLapse::passImageToApp, this,
             &QTimeLapse::receiveImageFromCapture);
+    connect(timeLapse, &TimeLapse::updateParamsInApp, this,
+            &QTimeLapse::updateParamsFromTimeLapse);
 
     // Add the preview views to the vector.
     capturePreviewViews.push_back(ui->preview1);
@@ -166,6 +171,7 @@ void QTimeLapse::setCameraSetting(int item) {
  */
 void QTimeLapse::on_actionNew_triggered() {
     project = new QTLProject();
+    project->load(timeLapse);
 }
 
 /**
@@ -176,6 +182,7 @@ void QTimeLapse::on_actionOpen_triggered() {
     if (fileDialog_project->exec()) {
         filename = fileDialog_project->selectedFiles().at(0);
         project = new QTLProject(filename.toStdString());
+        project->load(timeLapse);
     }
 }
 
@@ -277,7 +284,7 @@ void QTimeLapse::receiveImageFromCapture(const QString &path) {
     if (capturePreviews.size() > 36) {
         capturePreviews.erase(capturePreviews.begin());
     }
-    for (int i = 0; i < capturePreviews.size(); i++) {
+    for (unsigned int i = 0; i < capturePreviews.size(); i++) {
         if (capturePreviewViews.at(i)->scene()) {
             delete capturePreviewViews.at(i)->scene();
         }
@@ -364,6 +371,19 @@ void QTimeLapse::on_input_maxRuntime_textChanged(const QString &runtime) {
  */
 void QTimeLapse::on_input_maxFrames_textChanged(const QString &frames) {
     timeLapse->setMaxFrames(frames.toInt());
+}
+
+/**
+ * @brief QTimeLapse::updateParamsFromTimeLapse
+ */
+void QTimeLapse::updateParamsFromTimeLapse() {
+    TimeLapseParams *params = timeLapse->getParams();
+    ui->input_interval->setText(QString("%1").arg(params->interval));
+    ui->input_framesPerInterval->setText(QString("%1").arg(params->framesPerInterval));
+    ui->input_maxFrames->setText(QString("%1").arg(params->maxFrames));
+    ui->input_maxRuntime->setText(QString("%1").arg(params->maxRuntime));
+    ui->chk_retrieveImages->setChecked(params->retrieveImages);
+    ui->chk_deleteImages->setChecked(params->deleteImages);
 }
 
 /****************************************************************************************

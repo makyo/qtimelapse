@@ -15,6 +15,7 @@ void TimeLapse::setParams(TimeLapseParams *p) {
     setFramesPerInterval(p->framesPerInterval);
     setMaxRuntime(p->maxRuntime);
     setMaxFrames(p->maxFrames);
+    updateParamsInApp();
 }
 
 /**

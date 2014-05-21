@@ -33,9 +33,9 @@ void QTLProject::initialize() {
 
     if (!root.exists("timelapse")) {
         Setting &timelapse = root.add("timelapse", Setting::TypeGroup);
-        timelapse.add("interval", Setting::TypeInt) = 0;
-        timelapse.add("framesPerInterval", Setting::TypeInt) = 0;
-        timelapse.add("maxFrames", Setting::TypeInt) = 0;
+        timelapse.add("interval", Setting::TypeInt) = 10;
+        timelapse.add("framesPerInterval", Setting::TypeInt) = 1;
+        timelapse.add("maxFrames", Setting::TypeInt) = 10;
         timelapse.add("maxRuntime", Setting::TypeInt) = 0;
         timelapse.add("retrieveImages", Setting::TypeBoolean) = true;
         timelapse.add("deleteImages", Setting::TypeBoolean) = true;
@@ -100,5 +100,6 @@ void QTLProject::load(TimeLapse *timeLapse) {
     config.lookupValue("timelapse.retrieveImages", params->retrieveImages);
     config.lookupValue("timelapse.deleteImages", params->deleteImages);
 
+    timeLapse->setParams(params);
     // TODO - load camera widgets from camera group
 }
