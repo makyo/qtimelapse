@@ -26,6 +26,7 @@ struct _TimeLapseParams {
 class TimeLapseWorker : public QObject {
     Q_OBJECT
 
+public:
     bool halt = false;
 
 public slots:

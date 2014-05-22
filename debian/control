@@ -1,0 +1,17 @@
+Source: qtimelapse
+Section: video
+Priority: optional
+Maintainer: Matthew Scott <makyo@drab-makyo.com>
+Build-Depends: debhelper (>= 8.0.0), qt5-qmake, qtbase5-dev, libgphoto2-dev, libconfig++-dev, cdbs
+Standards-Version: 3.9.4
+Homepage: http://github.com/makyo/qtimelapse
+Vcs-Browser: https://github.com/makyo/qtimelapse.git
+
+Package: qtimelapse
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Qt-based Time Lapse Video Software
+ QTimeLapse is a Qt-based time lapse generating program.  It communicates with
+ your digital camera through libgphoto in order to repeatedly take a picture at
+ set intervals.  These images can then be strung together into a time lapse
+ video to generate a vastly speeded up version.

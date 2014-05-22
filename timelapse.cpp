@@ -107,7 +107,8 @@ void TimeLapse::stop() {
     qDebug() << "Attempting to stop capture...";
     worker->haltCapture();
     workerThread.quit();
-    workerThread.wait();bool halt = false;
+    workerThread.wait();
+    worker->halt = false;
 }
 
 /**
