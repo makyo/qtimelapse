@@ -2,7 +2,7 @@ Source: qtimelapse
 Section: video
 Priority: optional
 Maintainer: Matthew Scott <makyo@drab-makyo.com>
-Build-Depends: debhelper (>= 8.0.0), qt5-qmake, qtbase5-dev, libgphoto2-dev, libconfig++-dev, cdbs
+Build-Depends: debhelper (>= 8.0.0), qt5-qmake, qtbase5-dev, qt5-default, libgphoto2-dev, libconfig++-dev, cdbs
 Standards-Version: 3.9.4
 Homepage: http://github.com/makyo/qtimelapse
 Vcs-Browser: https://github.com/makyo/qtimelapse.git
