@@ -31,3 +31,12 @@ unix|win32: LIBS += -lgphoto2
 unix|win32: LIBS += -lgphoto2_port
 
 unix|win32: LIBS += -lconfig++
+
+macx: LIBS += -L/usr/local/lib/ -lgphoto2
+
+macx: LIBS += -L/usr/local/lib/ -lgphoto2_port
+
+macx: LIBS += -L/usr/local/lib/ -lconfig++
+
+INCLUDEPATH += /usr/local/include
+DEPENDPATH += /usr/local/include
