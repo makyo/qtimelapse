@@ -20,6 +20,7 @@ available for download.  Previous versions are available at [the project page on
 Launchpad](https://launchpad.net/qtl/).
 
 - [current - 0.0.2](macx/qtimelapse-0.0.2.dmg)
+  [(sig)](macx/qtimelapse-0.0.2.dmg.asc)
 
 ## Source
 
