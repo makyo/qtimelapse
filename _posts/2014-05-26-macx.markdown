@@ -1,0 +1,10 @@
+---
+layout: post
+title: Mac OS X Release
+
+---
+
+Well, that was easy!
+
+There is now a Mac OS X installer available in [the downloads
+section](/qtimelapse/downloads).
